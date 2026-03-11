@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">
+      @if (filtro === 'activos')    { Clases Activas }
+      @if (filtro === 'destacados') { Clases Destacadas }
+      @if (filtro === 'cancelados') { Clases Canceladas }
+      @if (filtro === 'terminados') { Clases Terminadas }
+    </h4>
+
+    <select class="form-select w-auto" [(ngModel)]="tipoSeleccionado" (change)="filtrarPorTipo()">
+      <option value="">Todos los tipos</option>
+      @for (tipo of tipos; track tipo.idTipo) {
+        <option [value]="tipo.idTipo">{{ tipo.nombre }}</option>
+      }
+    </select>
+  </div>
+
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-dark"></div>
+    </div>
+  }
+
+  @if (!cargando && eventosFiltrados.length === 0) {
+    <div class="alert alert-info">No hay clases disponibles.</div>
+  }
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    @for (evento of eventosFiltrados; track evento.idEvento) {
+      <div class="col">
+        <app-evento-card [evento]="evento" [mostrarReserva]="true"></app-evento-card>
+      </div>
+    }
+  </div>
+</div>

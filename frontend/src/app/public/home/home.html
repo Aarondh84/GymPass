@@ -1,0 +1,29 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold">Bienvenido a GymPass</h1>
+    <p class="lead text-muted">Reserva tu clase favorita en segundos</p>
+  </div>
+
+  <h4 class="mb-3">Clases Destacadas</h4>
+
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-dark" role="status"></div>
+      <p class="mt-2 text-muted">Cargando clases...</p>
+    </div>
+  }
+
+  @if (!cargando && eventos.length === 0) {
+    <div class="alert alert-info">No hay clases destacadas en este momento.</div>
+  }
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    @for (evento of eventos; track evento.idEvento) {
+      <div class="col">
+        <app-evento-card [evento]="evento"></app-evento-card>
+      </div>
+    }
+  </div>
+</div>

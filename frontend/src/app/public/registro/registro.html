@@ -1,0 +1,59 @@
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="card shadow p-4" style="width: 100%; max-width: 480px;">
+
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">🏋️ GymPass</h2>
+      <p class="text-muted">Crea tu cuenta de socio</p>
+    </div>
+
+    @if (errorMsg) {
+      <div class="alert alert-danger">{{ errorMsg }}</div>
+    }
+    @if (exitoso) {
+      <div class="alert alert-success">
+        ¡Cuenta creada! <a routerLink="/login">Inicia sesión aquí</a>
+      </div>
+    }
+
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label fw-semibold">Username</label>
+        <input type="text" class="form-control" [(ngModel)]="usuario.username" />
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-semibold">Email</label>
+        <input type="email" class="form-control" [(ngModel)]="usuario.email" />
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-semibold">Contraseña</label>
+        <input type="password" class="form-control" [(ngModel)]="usuario.password" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Nombre</label>
+        <input type="text" class="form-control" [(ngModel)]="usuario.nombre" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Apellidos</label>
+        <input type="text" class="form-control" [(ngModel)]="usuario.apellidos" />
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-semibold">Dirección <span class="text-muted">(opcional)</span></label>
+        <input type="text" class="form-control" [(ngModel)]="usuario.direccion" />
+      </div>
+    </div>
+
+    <button class="btn btn-dark w-100 mt-4" (click)="registrar()" [disabled]="cargando">
+      @if (cargando) {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+      }
+      Crear cuenta
+    </button>
+
+    <hr>
+    <p class="text-center text-muted small">
+      ¿Ya tienes cuenta?
+      <a routerLink="/login" class="text-dark fw-semibold">Inicia sesión</a>
+    </p>
+
+  </div>
+</div>

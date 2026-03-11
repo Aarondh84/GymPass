@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+  <a class="navbar-brand fw-bold" routerLink="/home">GymPass</a>
+
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navMenu">
+
+    @if (isAdmin()) {
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/eventos">Clases</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/usuarios">Usuarios</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/dashboard">Dashboard</a></li>
+      </ul>
+    }
+
+    @if (isCliente()) {
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Clases</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" routerLink="/clientes/activos">Activas</a></li>
+            <li><a class="dropdown-item" routerLink="/clientes/destacados">Destacadas</a></li>
+            <li><a class="dropdown-item" routerLink="/clientes/cancelados">Canceladas</a></li>
+            <li><a class="dropdown-item" routerLink="/clientes/terminados">Terminadas</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/clientes/misReservas">Mis Reservas</a>
+        </li>
+      </ul>
+    }
+
+    @if (!isLoggedIn()) {
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/home">Inicio</a></li>
+      </ul>
+    }
+
+    <ul class="navbar-nav ms-auto align-items-center">
+      @if (isLoggedIn()) {
+        <li class="nav-item me-3">
+          <span class="text-light small">{{ username() }}</span>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-light btn-sm" (click)="logout()">
+            Cerrar sesión
+          </button>
+        </li>
+      } @else {
+        <li class="nav-item me-2">
+          <a class="btn btn-outline-light btn-sm" routerLink="/login">Iniciar sesión</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-warning btn-sm" routerLink="/registro">Registrarse</a>
+        </li>
+      }
+    </ul>
+
+  </div>
+</nav>

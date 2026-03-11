@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h4 class="fw-bold mb-4">Mis Reservas</h4>
+
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-dark"></div>
+    </div>
+  }
+
+  @if (!cargando && reservas.length === 0) {
+    <div class="alert alert-info">
+      No tienes reservas activas.
+      <a routerLink="/clientes/activos" class="alert-link">Ver clases disponibles</a>
+    </div>
+  }
+
+  @if (!cargando && reservas.length > 0) {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Clase</th>
+            <th>Fecha</th>
+            <th>Precio/ud</th>
+            <th>Personas</th>
+            <th>Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (reserva of reservas; track reserva.idReserva) {
+            <tr>
+              <td class="fw-semibold">{{ reserva.nombreEvento }}</td>
+              <td>{{ reserva.fechaInicio }}</td>
+              <td>{{ reserva.precioVenta }} €</td>
+              <td>{{ reserva.cantidad }}</td>
+              <td class="fw-bold">{{ reserva.precioVenta * reserva.cantidad }} €</td>
+              <td>
+                <button class="btn btn-outline-danger btn-sm"
+                        (click)="cancelar(reserva.idReserva)">
+                  Cancelar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

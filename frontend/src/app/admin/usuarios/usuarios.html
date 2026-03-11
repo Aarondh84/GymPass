@@ -1,0 +1,68 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h4 class="fw-bold mb-4">Gestión de Usuarios</h4>
+
+  @if (mensajeOk) {
+    <div class="alert alert-success alert-dismissible">
+      {{ mensajeOk }}
+      <button type="button" class="btn-close" (click)="mensajeOk = ''"></button>
+    </div>
+  }
+
+  @if (cargando) {
+    <div class="text-center py-4">
+      <div class="spinner-border text-dark"></div>
+    </div>
+  }
+
+  @if (!cargando) {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Username</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Perfil</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (usuario of usuarios; track usuario.username) {
+            <tr>
+              <td class="fw-semibold">{{ usuario.username }}</td>
+              <td>{{ usuario.nombre }} {{ usuario.apellidos }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>
+                @for (perfil of usuario.perfiles; track perfil) {
+                  <span class="badge bg-dark me-1">{{ perfil }}</span>
+                }
+              </td>
+              <td>
+                <span class="badge"
+                  [class.bg-success]="usuario.enabled === 1"
+                  [class.bg-secondary]="usuario.enabled === 0">
+                  {{ usuario.enabled === 1 ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>
+                <div class="d-flex gap-1">
+                  <button class="btn btn-outline-dark btn-sm"
+                          (click)="toggleActivo(usuario)">
+                    {{ usuario.enabled === 1 ? 'Desactivar' : 'Activar' }}
+                  </button>
+                  <button class="btn btn-outline-danger btn-sm"
+                          (click)="eliminar(usuario.username)">
+                    Eliminar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
