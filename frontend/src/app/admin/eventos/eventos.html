@@ -4,24 +4,25 @@
 
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold mb-0">Gestión de Clases</h4>
-    <button class="btn btn-dark" (click)="nuevo()">Nueva Clase</button>
+    <button class="btn btn-dark" (click)="nuevo()" aria-label="Crear nueva clase">
+      Nueva Clase
+    </button>
   </div>
 
   @if (mensajeOk) {
-    <div class="alert alert-success alert-dismissible">
+    <div class="alert alert-success alert-dismissible" role="alert">
       {{ mensajeOk }}
-      <button type="button" class="btn-close" (click)="mensajeOk = ''"></button>
+      <button type="button" class="btn-close" (click)="mensajeOk = ''" aria-label="Cerrar"></button>
     </div>
   }
 
   @if (mensajeError) {
-    <div class="alert alert-danger alert-dismissible">
+    <div class="alert alert-danger alert-dismissible" role="alert">
       {{ mensajeError }}
-      <button type="button" class="btn-close" (click)="mensajeError = ''"></button>
+      <button type="button" class="btn-close" (click)="mensajeError = ''" aria-label="Cerrar"></button>
     </div>
   }
 
-  <!-- Formulario alta/edición -->
   @if (modoForm) {
     <div class="card shadow-sm mb-4">
       <div class="card-header bg-dark text-white">
@@ -29,52 +30,112 @@
       </div>
       <div class="card-body">
         <div class="row g-3">
+
           <div class="col-md-6">
-            <label class="form-label fw-semibold">Nombre *</label>
-            <input type="text" class="form-control" [(ngModel)]="form.nombre" />
+            <label for="nombre" class="form-label fw-semibold">Nombre *</label>
+            <input
+              id="nombre"
+              type="text"
+              class="form-control"
+              [(ngModel)]="form.nombre"
+              aria-label="Nombre de la clase" />
           </div>
+
           <div class="col-md-3">
-            <label class="form-label fw-semibold">Fecha inicio *</label>
-            <input type="date" class="form-control" [(ngModel)]="form.fechaInicio" />
+            <label for="fechaInicio" class="form-label fw-semibold">Fecha inicio *</label>
+            <input
+              id="fechaInicio"
+              type="date"
+              class="form-control"
+              [(ngModel)]="form.fechaInicio"
+              aria-label="Fecha de inicio de la clase" />
           </div>
+
           <div class="col-md-3">
-            <label class="form-label fw-semibold">Duración (min)</label>
-            <input type="number" class="form-control" [(ngModel)]="form.duracion" />
+            <label for="duracion" class="form-label fw-semibold">Duración (min)</label>
+            <input
+              id="duracion"
+              type="number"
+              class="form-control"
+              [(ngModel)]="form.duracion"
+              aria-label="Duración en minutos" />
           </div>
+
           <div class="col-md-6">
-            <label class="form-label fw-semibold">Descripción</label>
-            <textarea class="form-control" rows="2" [(ngModel)]="form.descripcion"></textarea>
+            <label for="descripcion" class="form-label fw-semibold">Descripción</label>
+            <textarea
+              id="descripcion"
+              class="form-control"
+              rows="2"
+              [(ngModel)]="form.descripcion"
+              aria-label="Descripción de la clase"></textarea>
           </div>
+
           <div class="col-md-6">
-            <label class="form-label fw-semibold">Dirección</label>
-            <input type="text" class="form-control" [(ngModel)]="form.direccion" />
+            <label for="direccion" class="form-label fw-semibold">Dirección</label>
+            <input
+              id="direccion"
+              type="text"
+              class="form-control"
+              [(ngModel)]="form.direccion"
+              aria-label="Dirección donde se imparte la clase" />
           </div>
+
           <div class="col-md-3">
-            <label class="form-label fw-semibold">Aforo máximo</label>
-            <input type="number" class="form-control" [(ngModel)]="form.aforoMaximo" />
+            <label for="aforoMaximo" class="form-label fw-semibold">Aforo máximo</label>
+            <input
+              id="aforoMaximo"
+              type="number"
+              class="form-control"
+              [(ngModel)]="form.aforoMaximo"
+              aria-label="Aforo máximo de la clase" />
           </div>
+
           <div class="col-md-3">
-            <label class="form-label fw-semibold">Mínimo asistencia</label>
-            <input type="number" class="form-control" [(ngModel)]="form.minimoAsistencia" />
+            <label for="minimoAsistencia" class="form-label fw-semibold">Mínimo asistencia</label>
+            <input
+              id="minimoAsistencia"
+              type="number"
+              class="form-control"
+              [(ngModel)]="form.minimoAsistencia"
+              aria-label="Mínimo de asistentes para realizar la clase" />
           </div>
+
           <div class="col-md-3">
-            <label class="form-label fw-semibold">Precio (€)</label>
-            <input type="number" class="form-control" [(ngModel)]="form.precio" />
+            <label for="precio" class="form-label fw-semibold">Precio (€)</label>
+            <input
+              id="precio"
+              type="number"
+              class="form-control"
+              [(ngModel)]="form.precio"
+              aria-label="Precio de la clase en euros" />
           </div>
+
           <div class="col-md-3">
-            <label class="form-label fw-semibold">Destacado</label>
-            <select class="form-select" [(ngModel)]="form.destacado">
+            <label for="destacado" class="form-label fw-semibold">Destacado</label>
+            <select
+              id="destacado"
+              class="form-select"
+              [(ngModel)]="form.destacado"
+              aria-label="Marcar clase como destacada">
               <option value="N">No</option>
               <option value="S">Si</option>
             </select>
           </div>
+
         </div>
 
         <div class="d-flex gap-2 mt-4">
-          <button class="btn btn-dark" (click)="guardar()">
+          <button
+            class="btn btn-dark"
+            (click)="guardar()"
+            aria-label="{{ editando ? 'Actualizar clase' : 'Crear nueva clase' }}">
             {{ editando ? 'Actualizar' : 'Crear Clase' }}
           </button>
-          <button class="btn btn-outline-secondary" (click)="cancelarForm()">
+          <button
+            class="btn btn-outline-secondary"
+            (click)="cancelarForm()"
+            aria-label="Cancelar formulario">
             Cancelar
           </button>
         </div>
@@ -82,10 +143,11 @@
     </div>
   }
 
-  <!-- Tabla de clases -->
   @if (cargando) {
     <div class="text-center py-4">
-      <div class="spinner-border text-dark"></div>
+      <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
     </div>
   }
 
@@ -94,13 +156,13 @@
       <table class="table table-hover align-middle">
         <thead class="table-dark">
           <tr>
-            <th>Nombre</th>
-            <th>Fecha</th>
-            <th>Aforo</th>
-            <th>Precio</th>
-            <th>Destacado</th>
-            <th>Estado</th>
-            <th></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Aforo</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Destacado</th>
+            <th scope="col">Estado</th>
+            <th scope="col"><span class="visually-hidden">Acciones</span></th>
           </tr>
         </thead>
         <tbody>
@@ -128,12 +190,24 @@
               </td>
               <td>
                 <div class="d-flex gap-1">
-                  <button class="btn btn-outline-dark btn-sm"
-                          (click)="editar(evento)">Editar</button>
-                  <button class="btn btn-outline-warning btn-sm"
-                          (click)="cancelarEvento(evento.idEvento)">Cancelar</button>
-                  <button class="btn btn-outline-danger btn-sm"
-                          (click)="eliminar(evento.idEvento)">Eliminar</button>
+                  <button
+                    class="btn btn-outline-dark btn-sm"
+                    (click)="editar(evento)"
+                    aria-label="Editar clase {{ evento.nombre }}">
+                    Editar
+                  </button>
+                  <button
+                    class="btn btn-outline-warning btn-sm"
+                    (click)="cancelarEvento(evento.idEvento)"
+                    aria-label="Cancelar clase {{ evento.nombre }}">
+                    Cancelar
+                  </button>
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="eliminar(evento.idEvento)"
+                    aria-label="Eliminar clase {{ evento.nombre }}">
+                    Eliminar
+                  </button>
                 </div>
               </td>
             </tr>
