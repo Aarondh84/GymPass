@@ -1,0 +1,124 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Tipos de Clase</h4>
+    <button class="btn btn-dark" (click)="nuevo()" aria-label="Crear nuevo tipo de clase">
+      Nuevo Tipo
+    </button>
+  </div>
+
+  @if (mensajeOk) {
+    <div class="alert alert-success alert-dismissible" role="alert">
+      {{ mensajeOk }}
+      <button type="button" class="btn-close" (click)="mensajeOk = ''" aria-label="Cerrar"></button>
+    </div>
+  }
+
+  @if (mensajeError) {
+    <div class="alert alert-danger alert-dismissible" role="alert">
+      {{ mensajeError }}
+      <button type="button" class="btn-close" (click)="mensajeError = ''" aria-label="Cerrar"></button>
+    </div>
+  }
+
+  @if (modoForm) {
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-dark text-white">
+        {{ editando ? 'Editar Tipo' : 'Nuevo Tipo' }}
+      </div>
+      <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+          <div class="row g-3">
+
+            <div class="col-md-4">
+              <label for="nombre" class="form-label fw-semibold">Nombre *</label>
+              <input
+                id="nombre"
+                type="text"
+                class="form-control"
+                formControlName="nombre"
+                [class.is-invalid]="nombre.invalid && nombre.touched"
+                aria-label="Nombre del tipo de clase" />
+              @if (nombre.invalid && nombre.touched) {
+                <div class="invalid-feedback">El nombre es obligatorio.</div>
+              }
+            </div>
+
+            <div class="col-md-8">
+              <label for="descripcion" class="form-label fw-semibold">Descripción *</label>
+              <input
+                id="descripcion"
+                type="text"
+                class="form-control"
+                formControlName="descripcion"
+                [class.is-invalid]="descripcion.invalid && descripcion.touched"
+                aria-label="Descripción del tipo de clase" />
+              @if (descripcion.invalid && descripcion.touched) {
+                <div class="invalid-feedback">La descripción es obligatoria.</div>
+              }
+            </div>
+
+          </div>
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-dark" aria-label="Guardar tipo de clase">
+              {{ editando ? 'Actualizar' : 'Crear Tipo' }}
+            </button>
+            <button type="button" class="btn btn-outline-secondary" (click)="cancelarForm()">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (cargando) {
+    <div class="text-center py-4">
+      <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  }
+
+  @if (!cargando) {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (tipo of tipos; track tipo.idTipo) {
+            <tr>
+              <td class="fw-semibold">{{ tipo.nombre }}</td>
+              <td class="text-muted">{{ tipo.descripcion }}</td>
+              <td>
+                <div class="d-flex gap-1">
+                  <button
+                    class="btn btn-outline-dark btn-sm"
+                    (click)="editar(tipo)"
+                    aria-label="Editar tipo {{ tipo.nombre }}">
+                    Editar
+                  </button>
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="eliminar(tipo.idTipo)"
+                    aria-label="Eliminar tipo {{ tipo.nombre }}">
+                    Eliminar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

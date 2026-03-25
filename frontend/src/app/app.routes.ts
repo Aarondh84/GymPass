@@ -31,13 +31,11 @@ export const routes: Routes = [
   // ── ZONA ADMIN ────────────────────────────────────────
   { path: 'admin', canActivate: [adminGuard], children: [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    { path: 'dashboard',
-      loadComponent: () => import('./admin/dashboard/dashboard').then(m => m.Dashboard) },
-    { path: 'eventos',
-      loadComponent: () => import('./admin/eventos/eventos').then(m => m.Eventos) },
-    { path: 'usuarios',
-      loadComponent: () => import('./admin/usuarios/usuarios').then(m => m.Usuarios) },
-  ]},
+    { path: 'dashboard',    loadComponent: () => import('./admin/dashboard/dashboard').then(m => m.Dashboard) },
+    { path: 'eventos',      loadComponent: () => import('./admin/eventos/eventos').then(m => m.Eventos) },
+    { path: 'usuarios',     loadComponent: () => import('./admin/usuarios/usuarios').then(m => m.Usuarios) },
+    { path: 'tipos-evento', loadComponent: () => import('./admin/tipos-evento/tipos-evento').then(m => m.TiposEvento) },
+]},
 
   { path: '**', redirectTo: 'home' }
 ];
