@@ -1,1 +1,99 @@
-<p>evento-detalle works!</p>
+<app-navbar></app-navbar>
+
+<div class="container mt-4" style="max-width: 700px;">
+
+  @if (cargando) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  }
+
+  @if (!cargando && evento) {
+    <div class="card shadow-sm">
+      <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">{{ evento.nombre }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Descripción:</strong> {{ evento.descripcion }}</p>
+            <p><strong>Fecha:</strong> {{ evento.fechaInicio }}</p>
+            <p><strong>Duración:</strong> {{ evento.duracion }} min</p>
+            <p><strong>Lugar:</strong> {{ evento.direccion }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Aforo máximo:</strong> {{ evento.aforoMaximo }}</p>
+            <p><strong>Mínimo asistencia:</strong> {{ evento.minimoAsistencia }}</p>
+            <p><strong>Precio:</strong> {{ evento.precio }} €/persona</p>
+            <p><strong>Plazas disponibles:</strong>
+              <span class="fw-bold text-success">{{ plazasLibres }}</span>
+            </p>
+          </div>
+        </div>
+
+        <hr>
+
+        @if (mensajeOk) {
+          <div class="alert alert-success" role="alert">{{ mensajeOk }}</div>
+        }
+
+        @if (mensajeError) {
+          <div class="alert alert-danger" role="alert">{{ mensajeError }}</div>
+        }
+
+        @if (!mensajeOk) {
+          <h5 class="mb-3">Realizar Reserva</h5>
+
+          <form [formGroup]="form" (ngSubmit)="reservar()" novalidate>
+            <div class="d-flex align-items-start gap-4">
+
+              <div>
+                <label for="cantidad" class="form-label fw-semibold">
+                  Número de personas
+                </label>
+                <select
+                  id="cantidad"
+                  class="form-select"
+                  formControlName="cantidad"
+                  [class.is-invalid]="cantidad.invalid && cantidad.touched"
+                  aria-label="Seleccionar número de personas"
+                  style="width: 120px;">
+                  @for (n of [1,2,3,4,5,6,7,8,9,10]; track n) {
+                    <option [value]="n">{{ n }}</option>
+                  }
+                </select>
+                @if (cantidad.invalid && cantidad.touched) {
+                  <div class="invalid-feedback">Selecciona entre 1 y 10 personas.</div>
+                }
+              </div>
+
+              <div class="mt-1">
+                <p class="text-muted small mb-1">Total a pagar:</p>
+                <p class="fw-bold fs-5">{{ evento.precio * cantidad.value }} €</p>
+              </div>
+
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-dark mt-3 px-4"
+              [disabled]="reservando"
+              aria-label="Confirmar reserva">
+              @if (reservando) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              Confirmar Reserva
+            </button>
+          </form>
+        }
+      </div>
+    </div>
+
+    <a routerLink="/clientes/activos" class="btn btn-outline-dark mt-3">
+      Volver a clases
+    </a>
+  }
+
+</div>

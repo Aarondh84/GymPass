@@ -4,7 +4,9 @@
 
   @if (cargando) {
     <div class="text-center py-5">
-      <div class="spinner-border text-dark"></div>
+      <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
     </div>
   }
 
@@ -26,7 +28,11 @@
             <p><strong>Mínimo asistencia:</strong> {{ evento.minimoAsistencia }}</p>
             <p><strong>Precio:</strong> {{ evento.precio }} €/persona</p>
             <p><strong>Plazas disponibles:</strong>
-              <span class="fw-bold text-success">{{ plazasLibres }}</span>
+              <span class="fw-bold"
+                [class.text-success]="plazasLibres > 0"
+                [class.text-danger]="plazasLibres === 0">
+                {{ plazasLibres > 0 ? plazasLibres : 'Completo' }}
+              </span>
             </p>
           </div>
         </div>
@@ -34,37 +40,32 @@
         <hr>
 
         @if (mensajeOk) {
-          <div class="alert alert-success">{{ mensajeOk }}</div>
+          <div class="alert alert-success" role="alert">{{ mensajeOk }}</div>
         }
+
         @if (mensajeError) {
-          <div class="alert alert-danger">{{ mensajeError }}</div>
+          <div class="alert alert-danger" role="alert">{{ mensajeError }}</div>
         }
 
         @if (!mensajeOk) {
-          <h5 class="mb-3">Realizar Reserva</h5>
-          <div class="d-flex align-items-center gap-3">
+          <div class="d-flex align-items-center justify-content-between">
             <div>
-              <label class="form-label fw-semibold">Número de personas</label>
-              <select class="form-select" [(ngModel)]="cantidad" style="width: 120px;">
-                @for (n of [1,2,3,4,5,6,7,8,9,10]; track n) {
-                  <option [value]="n">{{ n }}</option>
-                }
-              </select>
+              <p class="mb-1 text-muted small">Precio de la clase</p>
+              <p class="fw-bold fs-5 mb-0">{{ evento.precio }} €</p>
             </div>
-            <div class="mt-3">
-              <p class="text-muted small mb-1">Total a pagar:</p>
-              <p class="fw-bold fs-5">{{ evento.precio * cantidad }} €</p>
-            </div>
+            <button
+              class="btn btn-dark px-4"
+              (click)="reservar()"
+              [disabled]="reservando || plazasLibres === 0"
+              aria-label="Reservar plaza en esta clase">
+              @if (reservando) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              {{ plazasLibres === 0 ? 'Sin plazas' : 'Reservar Plaza' }}
+            </button>
           </div>
-
-          <button class="btn btn-dark mt-3 px-4"
-                  (click)="reservar()" [disabled]="reservando">
-            @if (reservando) {
-              <span class="spinner-border spinner-border-sm me-2"></span>
-            }
-            Confirmar Reserva
-          </button>
         }
+
       </div>
     </div>
 

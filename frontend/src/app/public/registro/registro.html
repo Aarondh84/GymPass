@@ -1,59 +1,124 @@
-<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
-  <div class="card shadow p-4" style="width: 100%; max-width: 480px;">
+<app-navbar></app-navbar>
 
-    <div class="text-center mb-4">
-      <h2 class="fw-bold">🏋️ GymPass</h2>
-      <p class="text-muted">Crea tu cuenta de socio</p>
+<div class="container mt-5" style="max-width: 600px;">
+  <div class="card shadow-sm">
+    <div class="card-header bg-dark text-white text-center">
+      <h4 class="mb-0">Crear Cuenta</h4>
     </div>
+    <div class="card-body p-4">
 
-    @if (errorMsg) {
-      <div class="alert alert-danger">{{ errorMsg }}</div>
-    }
-    @if (exitoso) {
-      <div class="alert alert-success">
-        ¡Cuenta creada! <a routerLink="/login">Inicia sesión aquí</a>
-      </div>
-    }
-
-    <div class="row g-3">
-      <div class="col-12">
-        <label class="form-label fw-semibold">Username</label>
-        <input type="text" class="form-control" [(ngModel)]="usuario.username" />
-      </div>
-      <div class="col-12">
-        <label class="form-label fw-semibold">Email</label>
-        <input type="email" class="form-control" [(ngModel)]="usuario.email" />
-      </div>
-      <div class="col-12">
-        <label class="form-label fw-semibold">Contraseña</label>
-        <input type="password" class="form-control" [(ngModel)]="usuario.password" />
-      </div>
-      <div class="col-md-6">
-        <label class="form-label fw-semibold">Nombre</label>
-        <input type="text" class="form-control" [(ngModel)]="usuario.nombre" />
-      </div>
-      <div class="col-md-6">
-        <label class="form-label fw-semibold">Apellidos</label>
-        <input type="text" class="form-control" [(ngModel)]="usuario.apellidos" />
-      </div>
-      <div class="col-12">
-        <label class="form-label fw-semibold">Dirección <span class="text-muted">(opcional)</span></label>
-        <input type="text" class="form-control" [(ngModel)]="usuario.direccion" />
-      </div>
-    </div>
-
-    <button class="btn btn-dark w-100 mt-4" (click)="registrar()" [disabled]="cargando">
-      @if (cargando) {
-        <span class="spinner-border spinner-border-sm me-2"></span>
+      @if (mensajeOk) {
+        <div class="alert alert-success" role="alert">{{ mensajeOk }}</div>
       }
-      Crear cuenta
-    </button>
 
-    <hr>
-    <p class="text-center text-muted small">
-      ¿Ya tienes cuenta?
-      <a routerLink="/login" class="text-dark fw-semibold">Inicia sesión</a>
-    </p>
+      @if (mensajeError) {
+        <div class="alert alert-danger" role="alert">{{ mensajeError }}</div>
+      }
 
+      <form [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+
+        <div class="row g-3">
+
+          <div class="col-md-6">
+            <label for="nombre" class="form-label fw-semibold">Nombre *</label>
+            <input
+              id="nombre"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="nombre.invalid && nombre.touched"
+              formControlName="nombre"
+              aria-label="Nombre" />
+            @if (nombre.invalid && nombre.touched) {
+              <div class="invalid-feedback">El nombre es obligatorio.</div>
+            }
+          </div>
+
+          <div class="col-md-6">
+            <label for="apellidos" class="form-label fw-semibold">Apellidos *</label>
+            <input
+              id="apellidos"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="apellidos.invalid && apellidos.touched"
+              formControlName="apellidos"
+              aria-label="Apellidos" />
+            @if (apellidos.invalid && apellidos.touched) {
+              <div class="invalid-feedback">Los apellidos son obligatorios.</div>
+            }
+          </div>
+
+          <div class="col-md-6">
+            <label for="reg-username" class="form-label fw-semibold">Usuario *</label>
+            <input
+              id="reg-username"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="username.invalid && username.touched"
+              formControlName="username"
+              aria-label="Nombre de usuario"
+              autocomplete="username" />
+            @if (username.invalid && username.touched) {
+              <div class="invalid-feedback">El usuario es obligatorio.</div>
+            }
+          </div>
+
+          <div class="col-md-6">
+            <label for="reg-email" class="form-label fw-semibold">Email *</label>
+            <input
+              id="reg-email"
+              type="email"
+              class="form-control"
+              [class.is-invalid]="email.invalid && email.touched"
+              formControlName="email"
+              aria-label="Correo electrónico"
+              autocomplete="email" />
+            @if (email.errors?.['required'] && email.touched) {
+              <div class="invalid-feedback">El email es obligatorio.</div>
+            }
+            @if (email.errors?.['email'] && email.touched) {
+              <div class="invalid-feedback">El formato del email no es válido.</div>
+            }
+          </div>
+
+          <div class="col-12">
+            <label for="reg-password" class="form-label fw-semibold">Contraseña *</label>
+            <input
+              id="reg-password"
+              type="password"
+              class="form-control"
+              [class.is-invalid]="password.invalid && password.touched"
+              formControlName="password"
+              aria-label="Contraseña"
+              autocomplete="new-password" />
+            @if (password.errors?.['required'] && password.touched) {
+              <div class="invalid-feedback">La contraseña es obligatoria.</div>
+            }
+            @if (password.errors?.['minlength'] && password.touched) {
+              <div class="invalid-feedback">Mínimo 6 caracteres.</div>
+            }
+          </div>
+
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-dark w-100 mt-4"
+          [disabled]="cargando"
+          aria-label="Crear cuenta">
+          @if (cargando) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          }
+          Crear Cuenta
+        </button>
+
+      </form>
+
+      <hr>
+      <p class="text-center text-muted small mb-0">
+        ¿Ya tienes cuenta?
+        <a routerLink="/login" class="text-dark fw-semibold">Inicia sesión</a>
+      </p>
+
+    </div>
   </div>
 </div>

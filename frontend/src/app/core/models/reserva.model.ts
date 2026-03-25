@@ -1,10 +1,10 @@
 export interface Reserva {
-  idReserva:    number;
-  idEvento:     number;
-  username:     string;
-  precioVenta:  number;
+  idReserva:     number;
+  idEvento:      number;
+  username:      string;
+  precioVenta:   number;
   observaciones?: string;
-  cantidad:     number;
+  cantidad?:     number;
   nombreEvento?: string;
   fechaInicio?:  string;
 }

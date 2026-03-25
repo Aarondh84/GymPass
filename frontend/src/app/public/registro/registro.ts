@@ -1,45 +1,56 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Navbar } from '../../shared/navbar/navbar';
 
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [Navbar, ReactiveFormsModule, RouterLink],
   templateUrl: './registro.html',
 })
 export class Registro {
-  usuario = {
-    username: '', email: '', password: '',
-    nombre: '', apellidos: '', direccion: ''
-  };
-  errorMsg = '';
-  exitoso  = false;
-  cargando = false;
+  form: FormGroup;
+  cargando     = false;
+  mensajeOk    = '';
+  mensajeError = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
+    this.form = this.fb.group({
+      username:  ['', Validators.required],
+      password:  ['', [Validators.required, Validators.minLength(6)]],
+      email:     ['', [Validators.required, Validators.email]],
+      nombre:    ['', Validators.required],
+      apellidos: ['', Validators.required]
+    });
+  }
+
+  get username()  { return this.form.get('username')!; }
+  get password()  { return this.form.get('password')!; }
+  get email()     { return this.form.get('email')!; }
+  get nombre()    { return this.form.get('nombre')!; }
+  get apellidos() { return this.form.get('apellidos')!; }
 
   registrar() {
-    if (!this.usuario.username || !this.usuario.email ||
-        !this.usuario.password || !this.usuario.nombre) {
-      this.errorMsg = 'Rellena todos los campos obligatorios.';
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
-    this.cargando = true;
-    this.errorMsg = '';
+    this.cargando    = true;
+    this.mensajeError = '';
 
-    this.http.post('http://localhost:8080/api/auth/registro', this.usuario)
-      .subscribe({
-        next: () => {
-          this.exitoso  = true;
-          this.cargando = false;
-        },
-        error: (err) => {
-          this.errorMsg = err.error?.mensaje ?? 'Error al registrar. Inténtalo de nuevo.';
-          this.cargando = false;
-        }
-      });
+    this.http.post('http://localhost:8080/api/auth/registro', this.form.value).subscribe({
+      next: () => {
+        this.cargando  = false;
+        this.mensajeOk = 'Cuenta creada correctamente. Ya puedes iniciar sesión.';
+        setTimeout(() => this.router.navigate(['/login']), 2000);
+      },
+      error: (err) => {
+        this.cargando    = false;
+        this.mensajeError = err.error?.mensaje ?? 'Error al crear la cuenta.';
+      }
+    });
   }
 }

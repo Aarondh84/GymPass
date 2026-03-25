@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Evento } from '../../core/models/evento.model';
@@ -10,17 +9,16 @@ import { Navbar } from '../../shared/navbar/navbar';
 @Component({
   selector: 'app-evento-detalle',
   standalone: true,
-  imports: [Navbar, FormsModule, RouterLink],
+  imports: [Navbar, RouterLink],
   templateUrl: './evento-detalle.html',
 })
 export class EventoDetalle implements OnInit {
-  evento:      Evento | null = null;
-  plazasLibres = 0;
-  cantidad     = 1;
-  cargando     = true;
-  reservando   = false;
-  mensajeOk    = '';
-  mensajeError = '';
+  evento:       Evento | null = null;
+  plazasLibres  = 0;
+  cargando      = true;
+  reservando    = false;
+  mensajeOk     = '';
+  mensajeError  = '';
 
   constructor(
     private route:         ActivatedRoute,
@@ -55,29 +53,30 @@ export class EventoDetalle implements OnInit {
   }
 
   reservar() {
-    if (this.cantidad > this.plazasLibres) {
-      this.mensajeError = `Solo quedan ${this.plazasLibres} plazas disponibles.`;
-      return;
-    }
-
     this.reservando   = true;
     this.mensajeError = '';
 
     const reserva = {
       idEvento:    this.evento!.idEvento,
       username:    this.auth.currentUser()!.username,
-      cantidad:    this.cantidad,
-      precioVenta: this.evento!.precio
+      precioVenta: this.evento!.precio,
+      cantidad:    1
     };
 
     this.http.post('http://localhost:8080/api/reservas', reserva).subscribe({
       next: () => {
-        this.mensajeOk  = `Reserva confirmada para ${this.cantidad} persona(s).`;
+        this.mensajeOk  = 'Reserva confirmada. Nos vemos en clase.';
         this.reservando = false;
       },
       error: (err) => {
-        this.mensajeError = err.error?.mensaje ?? 'Error al realizar la reserva.';
-        this.reservando   = false;
+        if (err.status === 409) {
+          this.mensajeError = 'Ya tienes 2 reservas para este día. No puedes reservar más clases.';
+        } else if (err.status === 400) {
+          this.mensajeError = 'No hay plazas disponibles para esta clase.';
+        } else {
+          this.mensajeError = err.error?.mensaje ?? 'Error al realizar la reserva.';
+        }
+        this.reservando = false;
       }
     });
   }

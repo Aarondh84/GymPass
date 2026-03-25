@@ -1,36 +1,43 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
-import { LoginRequest } from '../../core/models/usuario.model';
+import { Navbar } from '../../shared/navbar/navbar';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [Navbar, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
 })
 export class Login {
-  credentials: LoginRequest = { username: '', password: '' };
-  errorMsg = '';
-  cargando = false;
+  form: FormGroup;
+  cargando    = false;
+  mensajeError = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
+    this.form = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
+
+  get username() { return this.form.get('username')!; }
+  get password() { return this.form.get('password')!; }
 
   login() {
-    if (!this.credentials.username || !this.credentials.password) {
-      this.errorMsg = 'Por favor rellena todos los campos.';
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
-    this.cargando = true;
-    this.errorMsg = '';
+    this.cargando    = true;
+    this.mensajeError = '';
 
-    this.auth.login(this.credentials).subscribe({
-      next: (response) => {
-        this.auth.saveSession(response);
-
-        // Redirigir según el rol
+    this.auth.login(this.form.value).subscribe({
+      next: () => {
+        this.cargando = false;
         if (this.auth.isAdmin()) {
           this.router.navigate(['/admin/dashboard']);
         } else {
@@ -38,8 +45,8 @@ export class Login {
         }
       },
       error: () => {
-        this.errorMsg = 'Usuario o contraseña incorrectos.';
-        this.cargando = false;
+        this.cargando    = false;
+        this.mensajeError = 'Usuario o contraseña incorrectos.';
       }
     });
   }

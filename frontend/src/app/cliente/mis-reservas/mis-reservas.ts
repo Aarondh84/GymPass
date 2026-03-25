@@ -22,7 +22,12 @@ export class MisReservas implements OnInit {
     this.http.get<Reserva[]>(`http://localhost:8080/api/reservas/usuario/${username}`)
       .subscribe({
         next: (data) => {
-          this.reservas = data;
+          const hoy = new Date();
+          hoy.setHours(0, 0, 0, 0);
+          this.reservas = data.filter(r => {
+            if (!r.fechaInicio) return true;
+            return new Date(r.fechaInicio) >= hoy;
+          });
           this.cargando = false;
         },
         error: () => this.cargando = false
