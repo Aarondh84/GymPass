@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Evento } from '../../core/models/evento.model';
 import { EventoService } from '../../core/services/evento';
@@ -8,23 +8,41 @@ import { Navbar } from '../../shared/navbar/navbar';
 @Component({
   selector: 'app-eventos',
   standalone: true,
-  imports: [Navbar, FormsModule],
+  imports: [Navbar, ReactiveFormsModule],
   templateUrl: './eventos.html',
 })
 export class Eventos implements OnInit {
-  eventos:   Evento[] = [];
-  cargando   = true;
-  modoForm   = false;   // true = mostrar formulario
-  editando   = false;   // true = editar, false = crear
-  mensajeOk  = '';
-  mensajeError = '';
+  eventos:      Evento[] = [];
+  cargando      = true;
+  modoForm      = false;
+  editando      = false;
+  mensajeOk     = '';
+  mensajeError  = '';
+  idEditando    = 0;
 
-  form: Partial<Evento> = this.formVacio();
+  form: FormGroup;
 
-  constructor(
-    private eventoService: EventoService,
-    private http: HttpClient
-  ) {}
+  constructor(private eventoService: EventoService, private http: HttpClient, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      nombre:           ['', Validators.required],
+      descripcion:      [''],
+      fechaInicio:      ['', Validators.required],
+      duracion:         [60, [Validators.required, Validators.min(1)]],
+      direccion:        [''],
+      aforoMaximo:      [20, [Validators.required, Validators.min(1)]],
+      minimoAsistencia: [5,  [Validators.required, Validators.min(1)]],
+      precio:           [10, [Validators.required, Validators.min(0)]],
+      destacado:        ['N'],
+      idTipo:           [1]
+    });
+  }
+
+  get nombre()           { return this.form.get('nombre')!; }
+  get fechaInicio()      { return this.form.get('fechaInicio')!; }
+  get duracion()         { return this.form.get('duracion')!; }
+  get aforoMaximo()      { return this.form.get('aforoMaximo')!; }
+  get minimoAsistencia() { return this.form.get('minimoAsistencia')!; }
+  get precio()           { return this.form.get('precio')!; }
 
   ngOnInit() { this.cargar(); }
 
@@ -39,44 +57,51 @@ export class Eventos implements OnInit {
     });
   }
 
-  formVacio(): Partial<Evento> {
-    return {
-      nombre: '', descripcion: '', fechaInicio: '',
-      duracion: 60, direccion: '', aforoMaximo: 20,
-      minimoAsistencia: 5, precio: 10,
-      estado: 'ACTIVO', destacado: 'N', idTipo: 1
-    };
-  }
-
   nuevo() {
-    this.form      = this.formVacio();
-    this.editando  = false;
-    this.modoForm  = true;
-    this.mensajeOk = '';
+    this.form.reset({
+      duracion: 60, aforoMaximo: 20,
+      minimoAsistencia: 5, precio: 10,
+      destacado: 'N', idTipo: 1
+    });
+    this.editando     = false;
+    this.modoForm     = true;
+    this.mensajeOk    = '';
     this.mensajeError = '';
   }
 
   editar(evento: Evento) {
-    this.form      = { ...evento };  // copia del objeto
-    this.editando  = true;
-    this.modoForm  = true;
-    this.mensajeOk = '';
+    this.form.setValue({
+      nombre:           evento.nombre,
+      descripcion:      evento.descripcion,
+      fechaInicio:      evento.fechaInicio,
+      duracion:         evento.duracion,
+      direccion:        evento.direccion,
+      aforoMaximo:      evento.aforoMaximo,
+      minimoAsistencia: evento.minimoAsistencia,
+      precio:           evento.precio,
+      destacado:        evento.destacado,
+      idTipo:           evento.idTipo
+    });
+    this.idEditando   = evento.idEvento;
+    this.editando     = true;
+    this.modoForm     = true;
+    this.mensajeOk    = '';
     this.mensajeError = '';
   }
 
   cancelarForm() {
     this.modoForm = false;
-    this.form     = this.formVacio();
+    this.form.reset();
   }
 
   guardar() {
-    if (!this.form.nombre || !this.form.fechaInicio) {
-      this.mensajeError = 'Nombre y fecha son obligatorios.';
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
-    if (this.editando && this.form.idEvento) {
-      this.eventoService.editar(this.form.idEvento, this.form as Evento).subscribe({
+    if (this.editando) {
+      this.eventoService.editar(this.idEditando, this.form.value).subscribe({
         next: () => {
           this.mensajeOk = 'Clase actualizada correctamente.';
           this.modoForm  = false;
@@ -85,7 +110,7 @@ export class Eventos implements OnInit {
         error: () => this.mensajeError = 'Error al actualizar la clase.'
       });
     } else {
-      this.eventoService.crear(this.form as Evento).subscribe({
+      this.eventoService.crear(this.form.value).subscribe({
         next: () => {
           this.mensajeOk = 'Clase creada correctamente.';
           this.modoForm  = false;

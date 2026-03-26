@@ -29,116 +29,144 @@
         {{ editando ? 'Editar Clase' : 'Nueva Clase' }}
       </div>
       <div class="card-body">
-        <div class="row g-3">
+        <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+          <div class="row g-3">
 
-          <div class="col-md-6">
-            <label for="nombre" class="form-label fw-semibold">Nombre *</label>
-            <input
-              id="nombre"
-              type="text"
-              class="form-control"
-              [(ngModel)]="form.nombre"
-              aria-label="Nombre de la clase" />
+            <div class="col-md-6">
+              <label for="nombre" class="form-label fw-semibold">Nombre *</label>
+              <input
+                id="nombre"
+                type="text"
+                class="form-control"
+                formControlName="nombre"
+                [class.is-invalid]="nombre.invalid && nombre.touched"
+                aria-label="Nombre de la clase" />
+              @if (nombre.invalid && nombre.touched) {
+                <div class="invalid-feedback">El nombre es obligatorio.</div>
+              }
+            </div>
+
+            <div class="col-md-3">
+              <label for="fechaInicio" class="form-label fw-semibold">Fecha inicio *</label>
+              <input
+                id="fechaInicio"
+                type="date"
+                class="form-control"
+                formControlName="fechaInicio"
+                [class.is-invalid]="fechaInicio.invalid && fechaInicio.touched"
+                aria-label="Fecha de inicio de la clase" />
+              @if (fechaInicio.invalid && fechaInicio.touched) {
+                <div class="invalid-feedback">La fecha es obligatoria.</div>
+              }
+            </div>
+
+            <div class="col-md-3">
+              <label for="duracion" class="form-label fw-semibold">Duración (min)</label>
+              <input
+                id="duracion"
+                type="number"
+                class="form-control"
+                formControlName="duracion"
+                [class.is-invalid]="duracion.invalid && duracion.touched"
+                aria-label="Duración en minutos" />
+              @if (duracion.invalid && duracion.touched) {
+                <div class="invalid-feedback">Duración mínima 1 minuto.</div>
+              }
+            </div>
+
+            <div class="col-md-6">
+              <label for="descripcion" class="form-label fw-semibold">Descripción</label>
+              <textarea
+                id="descripcion"
+                class="form-control"
+                rows="2"
+                formControlName="descripcion"
+                aria-label="Descripción de la clase"></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <label for="direccion" class="form-label fw-semibold">Dirección</label>
+              <input
+                id="direccion"
+                type="text"
+                class="form-control"
+                formControlName="direccion"
+                aria-label="Dirección donde se imparte la clase" />
+            </div>
+
+            <div class="col-md-3">
+              <label for="aforoMaximo" class="form-label fw-semibold">Aforo máximo</label>
+              <input
+                id="aforoMaximo"
+                type="number"
+                class="form-control"
+                formControlName="aforoMaximo"
+                [class.is-invalid]="aforoMaximo.invalid && aforoMaximo.touched"
+                aria-label="Aforo máximo de la clase" />
+              @if (aforoMaximo.invalid && aforoMaximo.touched) {
+                <div class="invalid-feedback">El aforo debe ser mayor que 0.</div>
+              }
+            </div>
+
+            <div class="col-md-3">
+              <label for="minimoAsistencia" class="form-label fw-semibold">Mínimo asistencia</label>
+              <input
+                id="minimoAsistencia"
+                type="number"
+                class="form-control"
+                formControlName="minimoAsistencia"
+                [class.is-invalid]="minimoAsistencia.invalid && minimoAsistencia.touched"
+                aria-label="Mínimo de asistentes" />
+              @if (minimoAsistencia.invalid && minimoAsistencia.touched) {
+                <div class="invalid-feedback">El mínimo debe ser mayor que 0.</div>
+              }
+            </div>
+
+            <div class="col-md-3">
+              <label for="precio" class="form-label fw-semibold">Precio (€)</label>
+              <input
+                id="precio"
+                type="number"
+                class="form-control"
+                formControlName="precio"
+                [class.is-invalid]="precio.invalid && precio.touched"
+                aria-label="Precio de la clase en euros" />
+              @if (precio.invalid && precio.touched) {
+                <div class="invalid-feedback">El precio no puede ser negativo.</div>
+              }
+            </div>
+
+            <div class="col-md-3">
+              <label for="destacado" class="form-label fw-semibold">Destacado</label>
+              <select
+                id="destacado"
+                class="form-select"
+                formControlName="destacado"
+                aria-label="Marcar clase como destacada">
+                <option value="N">No</option>
+                <option value="S">Si</option>
+              </select>
+            </div>
+
           </div>
 
-          <div class="col-md-3">
-            <label for="fechaInicio" class="form-label fw-semibold">Fecha inicio *</label>
-            <input
-              id="fechaInicio"
-              type="date"
-              class="form-control"
-              [(ngModel)]="form.fechaInicio"
-              aria-label="Fecha de inicio de la clase" />
+          <div class="d-flex gap-2 mt-4">
+            <button
+              type="submit"
+              class="btn btn-dark"
+              aria-label="{{ editando ? 'Actualizar clase' : 'Crear nueva clase' }}">
+              {{ editando ? 'Actualizar' : 'Crear Clase' }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="cancelarForm()"
+              aria-label="Cancelar formulario">
+              Cancelar
+            </button>
           </div>
 
-          <div class="col-md-3">
-            <label for="duracion" class="form-label fw-semibold">Duración (min)</label>
-            <input
-              id="duracion"
-              type="number"
-              class="form-control"
-              [(ngModel)]="form.duracion"
-              aria-label="Duración en minutos" />
-          </div>
-
-          <div class="col-md-6">
-            <label for="descripcion" class="form-label fw-semibold">Descripción</label>
-            <textarea
-              id="descripcion"
-              class="form-control"
-              rows="2"
-              [(ngModel)]="form.descripcion"
-              aria-label="Descripción de la clase"></textarea>
-          </div>
-
-          <div class="col-md-6">
-            <label for="direccion" class="form-label fw-semibold">Dirección</label>
-            <input
-              id="direccion"
-              type="text"
-              class="form-control"
-              [(ngModel)]="form.direccion"
-              aria-label="Dirección donde se imparte la clase" />
-          </div>
-
-          <div class="col-md-3">
-            <label for="aforoMaximo" class="form-label fw-semibold">Aforo máximo</label>
-            <input
-              id="aforoMaximo"
-              type="number"
-              class="form-control"
-              [(ngModel)]="form.aforoMaximo"
-              aria-label="Aforo máximo de la clase" />
-          </div>
-
-          <div class="col-md-3">
-            <label for="minimoAsistencia" class="form-label fw-semibold">Mínimo asistencia</label>
-            <input
-              id="minimoAsistencia"
-              type="number"
-              class="form-control"
-              [(ngModel)]="form.minimoAsistencia"
-              aria-label="Mínimo de asistentes para realizar la clase" />
-          </div>
-
-          <div class="col-md-3">
-            <label for="precio" class="form-label fw-semibold">Precio (€)</label>
-            <input
-              id="precio"
-              type="number"
-              class="form-control"
-              [(ngModel)]="form.precio"
-              aria-label="Precio de la clase en euros" />
-          </div>
-
-          <div class="col-md-3">
-            <label for="destacado" class="form-label fw-semibold">Destacado</label>
-            <select
-              id="destacado"
-              class="form-select"
-              [(ngModel)]="form.destacado"
-              aria-label="Marcar clase como destacada">
-              <option value="N">No</option>
-              <option value="S">Si</option>
-            </select>
-          </div>
-
-        </div>
-
-        <div class="d-flex gap-2 mt-4">
-          <button
-            class="btn btn-dark"
-            (click)="guardar()"
-            aria-label="{{ editando ? 'Actualizar clase' : 'Crear nueva clase' }}">
-            {{ editando ? 'Actualizar' : 'Crear Clase' }}
-          </button>
-          <button
-            class="btn btn-outline-secondary"
-            (click)="cancelarForm()"
-            aria-label="Cancelar formulario">
-            Cancelar
-          </button>
-        </div>
+        </form>
       </div>
     </div>
   }
