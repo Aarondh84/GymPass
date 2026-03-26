@@ -1,4 +1,4 @@
-package apirest.gympass.entities;
+package apirest.gympass.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,21 +1,24 @@
-export interface Usuario {
-  username:        string;
-  email:           string;
-  nombre:          string;
-  apellidos:       string;
-  direccion?:      string;
-  enabled:         number;
-  fechaRegistro?:  string;
-  perfiles?:       string[];
+export interface Perfil {
+  idPerfil: number;
+  nombre:   string;
 }
 
-// Lo que enviamos al backend para hacer login
+export interface Usuario {
+  username:      string;
+  email:         string;
+  nombre:        string;
+  apellidos:     string;
+  direccion?:    string;
+  enabled:       number;
+  fechaRegistro?: string;
+  perfiles:      Perfil[];
+}
+
 export interface LoginRequest {
   username: string;
   password: string;
 }
 
-// Lo que nos devuelve el backend tras login exitoso
 export interface LoginResponse {
   token:    string;
   username: string;
