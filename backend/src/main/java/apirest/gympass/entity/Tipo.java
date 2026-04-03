@@ -1,4 +1,4 @@
-package apirest.gympass.entities;
+package apirest.gympass.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,17 +10,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "perfiles")
 @Data
 @AllArgsConstructor 
 @NoArgsConstructor
-public class Perfil {
+@Entity
+@Table(name = "tipos")
+public class Tipo {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_PERFIL")
+	@Column(name = "ID_TIPO")
 	private Long id;
 	
 	private String nombre;
-	
+	private String descripcion;
 }

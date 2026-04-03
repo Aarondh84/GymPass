@@ -1,6 +1,4 @@
-package apirest.gympass.entities;
-
-import java.math.BigDecimal;
+package apirest.gympass.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,7 +32,7 @@ public class Reserva {
 	 private Usuario usuario;
 	 
 	 @Column(name = "PRECIO_VENTA")
-	 private BigDecimal precioVenta;
+	 private float precioVenta;
 	 
 	 private String observaciones;
 	 private Integer cantidad;

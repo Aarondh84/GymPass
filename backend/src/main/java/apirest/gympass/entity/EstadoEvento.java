@@ -1,4 +1,4 @@
-package apirest.gympass.entities;
+package apirest.gympass.entity;
 
 public enum EstadoEvento {
 	ACTIVO,

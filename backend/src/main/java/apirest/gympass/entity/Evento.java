@@ -1,6 +1,5 @@
-package apirest.gympass.entities;
+package apirest.gympass.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
@@ -49,7 +48,7 @@ public class Evento {
 	@Column(name = "MINIMO_ASISTENCIA")
 	private Integer minimoAsistencia;
 	
-	private BigDecimal precio;
+	private float precio;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_TIPO")

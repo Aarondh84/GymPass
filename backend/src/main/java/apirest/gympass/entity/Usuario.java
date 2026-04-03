@@ -1,4 +1,4 @@
-package apirest.gympass.entities;
+package apirest.gympass.entity;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "usuarios")
 @Data
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
 public class Usuario {
 	@Id
