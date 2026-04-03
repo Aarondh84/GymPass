@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import apirest.gympass.Dtos.EventoDto;
 import apirest.gympass.Repository.EventoRepository;
 import apirest.gympass.entities.EstadoEvento;
 import apirest.gympass.entities.Evento;
@@ -43,12 +43,12 @@ public class EventoServiceImpl implements EventoService {
 	}
 	
 	
-	private EventoDto conVertirADto(Evento evento) {
+	private EventoDto converToDto(Evento evento) {
 	    EventoDto dto = new EventoDto();
 	    dto.setIdEvento(evento.getIdEvento());
 	    dto.setNombre(evento.getNombre());
 	    dto.setPrecio(evento.getPrecio());
-	    // Solo metes las variables que quieres enviar [cite: 2026-03-18]
+	    
 	    return dto;
 	}
 
