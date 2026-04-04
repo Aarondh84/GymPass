@@ -36,18 +36,19 @@ export class Login {
     this.mensajeError = '';
 
     this.auth.login(this.form.value).subscribe({
-      next: () => {
-        this.cargando = false;
-        if (this.auth.isAdmin()) {
-          this.router.navigate(['/admin/dashboard']);
-        } else {
-          this.router.navigate(['/clientes/activos']);
-        }
-      },
-      error: () => {
-        this.cargando    = false;
-        this.mensajeError = 'Usuario o contraseña incorrectos.';
-      }
-    });
+  next: (response) => {
+    this.auth.saveSession(response);  // ← añadir esta línea
+    this.cargando = false;
+    if (this.auth.isAdmin()) {
+      this.router.navigate(['/admin/dashboard']);
+    } else {
+      this.router.navigate(['/clientes/activos']);
+    }
+  },
+  error: () => {
+    this.cargando    = false;
+    this.mensajeError = 'Usuario o contraseña incorrectos.';
+  }
+});
   }
 }

@@ -1,12 +1,12 @@
 package apirest.gympass.security;
 
 import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,41 +17,55 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import lombok.RequiredArgsConstructor;
+
+// Clase principal de configuracion de seguridad
+// Define que rutas son publicas, cuales privadas,
+// como se cifran las contraseñas y configura CORS para el frontend
 @Configuration
-@EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
-
+    // Define las reglas de seguridad para cada peticion HTTP
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
         http
+            // Desactivamos CSRF porque usamos JWT y no sesiones
             .csrf(csrf -> csrf.disable())
+
+            // Configuramos CORS para permitir peticiones desde Angular
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+            //--------------BORRAR
+            .headers(headers -> headers.disable())
+            //------------------------------------------------------------
+            
+            // Sin sesion HTTP — cada peticion se autentica con el token
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+
             .authorizeHttpRequests(auth -> auth
-                // Rutas públicas
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/eventos/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/tipos/**").permitAll()
-                // Rutas de cliente
-                .requestMatchers("/api/reservas/**").authenticated()
-                // Rutas de admin
-                .requestMatchers("/api/usuarios/**").hasAuthority("ROLE_ADMON")
-                .requestMatchers(HttpMethod.POST, "/api/eventos/**").hasAuthority("ROLE_ADMON")
-                .requestMatchers(HttpMethod.PUT, "/api/eventos/**").hasAuthority("ROLE_ADMON")
-                .requestMatchers(HttpMethod.DELETE, "/api/eventos/**").hasAuthority("ROLE_ADMON")
-                .requestMatchers(HttpMethod.POST, "/api/tipos/**").hasAuthority("ROLE_ADMON")
-                .requestMatchers(HttpMethod.PUT, "/api/tipos/**").hasAuthority("ROLE_ADMON")
-                .requestMatchers(HttpMethod.DELETE, "/api/tipos/**").hasAuthority("ROLE_ADMON")
-                .anyRequest().authenticated()
-            )
+            	    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            	    .requestMatchers("/api/auth/**").permitAll()
+            	    .requestMatchers(HttpMethod.GET, "/api/eventos/**").permitAll()
+            	    .requestMatchers(HttpMethod.GET, "/api/tipos/**").permitAll()
+            	    .requestMatchers("/api/reservas/**").authenticated()
+            	    .requestMatchers("/api/usuarios/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.POST,   "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.PUT,    "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.DELETE, "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.POST,   "/api/tipos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.PUT,    "/api/tipos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.DELETE, "/api/tipos/**").hasAuthority("ROLE_ADMON")
+            	    .anyRequest().authenticated()
+            	)
+
+            // Añadimos nuestro filtro JWT antes del filtro de Spring Security
             .addFilterBefore(
                 jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
@@ -60,17 +74,20 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // El AuthenticationManager es el que valida usuario y contraseña en el login
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
+    // BCrypt es el algoritmo que usamos para cifrar contraseñas
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Configuracion CORS — permite que Angular en puerto 4200 llame a esta API
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();

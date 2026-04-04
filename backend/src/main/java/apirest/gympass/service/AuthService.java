@@ -28,19 +28,19 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
 
     // Componente de Spring Security que valida usuario y contraseña
-    private final AuthenticationManager  authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     // Para buscar y guardar usuarios en la BD
-    private final UsuarioRepository      usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     // Para buscar el perfil ROLE_CLIENTE al registrar un usuario nuevo
-    private final PerfilRepository       perfilRepository;
+    private final PerfilRepository perfilRepository;
 
     // Para cifrar la contraseña antes de guardarla
-    private final PasswordEncoder        passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     // Para generar el token JWT tras el login
-    private final JwtSecurityService     jwtService;
+    private final JwtSecurityService jwtService;
 
     // LOGIN — comprueba credenciales y devuelve token + datos del usuario
     public LoginResponseDTO login(LoginRequestDTO request) {
@@ -68,7 +68,7 @@ public class AuthService {
             .map(a -> a.getAuthority())
             .toList();
 
-        // Devolvemos token, username y roles (lo que espera el frontend)
+        // Devolvemos token, username y roles — exactamente lo que espera el frontend
         return new LoginResponseDTO(token, userDetails.getUsername(), roles);
     }
 
@@ -81,7 +81,6 @@ public class AuthService {
         }
 
         // Buscamos el perfil ROLE_CLIENTE en la BD
-        // Si no existe algo esta mal configurado en la BD
         Perfil perfilCliente = perfilRepository.findByNombre("ROLE_CLIENTE")
             .orElseThrow(() -> new RuntimeException("Perfil ROLE_CLIENTE no encontrado."));
 
