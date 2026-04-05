@@ -1,14 +1,13 @@
 package apirest.gympass.service;
 
 import java.util.List;
-import apirest.gympass.entity.Usuario;
+import apirest.gympass.entityDto.UsuarioDTO;
 
-// Esta interfaz define el "contrato" — qué operaciones existen para Usuario
-// La clase UsuarioServiceImpl será la que implemente estas operaciones
+// Esta interfaz define el contrato — que operaciones existen para Usuario
 public interface UsuarioService {
 
-    // Devuelve todos los usuarios de la base de datos
-    List<Usuario> findAll();
+    // Devuelve todos los usuarios sin exponer la contraseña
+    List<UsuarioDTO> findAll();
 
     // Cambia el estado activo/inactivo del usuario y devuelve el nuevo estado
     boolean userEnabled(String username);

@@ -39,10 +39,6 @@ public class SecurityConfig {
 
             // Configuramos CORS para permitir peticiones desde Angular
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-            //--------------BORRAR
-            .headers(headers -> headers.disable())
-            //------------------------------------------------------------
             
             // Sin sesion HTTP — cada peticion se autentica con el token
             .sessionManagement(session ->
@@ -56,12 +52,13 @@ public class SecurityConfig {
             	    .requestMatchers(HttpMethod.GET, "/api/tipos/**").permitAll()
             	    .requestMatchers("/api/reservas/**").authenticated()
             	    .requestMatchers("/api/usuarios/**").hasAuthority("ROLE_ADMON")
-            	    .requestMatchers(HttpMethod.POST,   "/api/eventos/**").hasAuthority("ROLE_ADMON")
-            	    .requestMatchers(HttpMethod.PUT,    "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.POST, "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.PUT, "/api/eventos/**").hasAuthority("ROLE_ADMON")
             	    .requestMatchers(HttpMethod.DELETE, "/api/eventos/**").hasAuthority("ROLE_ADMON")
-            	    .requestMatchers(HttpMethod.POST,   "/api/tipos/**").hasAuthority("ROLE_ADMON")
-            	    .requestMatchers(HttpMethod.PUT,    "/api/tipos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.POST, "/api/tipos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.PUT, "/api/tipos/**").hasAuthority("ROLE_ADMON")
             	    .requestMatchers(HttpMethod.DELETE, "/api/tipos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.GET, "/api/admin/stats").hasAuthority("ROLE_ADMON")
             	    .anyRequest().authenticated()
             	)
 
