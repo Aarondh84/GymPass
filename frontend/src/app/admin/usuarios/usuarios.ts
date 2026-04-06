@@ -20,7 +20,7 @@ export class Usuarios implements OnInit {
 
   cargar() {
     this.cargando = true;
-    this.http.get<Usuario[]>('http://localhost:8080/api/usuarios').subscribe({
+    this.http.get<Usuario[]>('/api/usuarios').subscribe({
       next: (data) => {
         this.usuarios = data;
         this.cargando = false;
@@ -31,7 +31,7 @@ export class Usuarios implements OnInit {
 
   toggleActivo(usuario: Usuario) {
     const nuevoEstado = usuario.enabled === 1 ? 0 : 1;
-    this.http.patch(`http://localhost:8080/api/usuarios/${usuario.username}/estado`,
+    this.http.patch(`/api/usuarios/${usuario.username}/estado`,
       { enabled: nuevoEstado }).subscribe({
         next: () => {
           usuario.enabled = nuevoEstado;
@@ -43,7 +43,7 @@ export class Usuarios implements OnInit {
 
   eliminar(username: string) {
     if (!confirm(`¿Eliminar el usuario ${username}?`)) return;
-    this.http.delete(`http://localhost:8080/api/usuarios/${username}`).subscribe({
+    this.http.delete(`/api/usuarios/${username}`).subscribe({
       next: () => {
         this.usuarios  = this.usuarios.filter(u => u.username !== username);
         this.mensajeOk = 'Usuario eliminado.';

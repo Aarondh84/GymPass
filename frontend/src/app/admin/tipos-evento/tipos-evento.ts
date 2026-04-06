@@ -40,7 +40,7 @@ export class TiposEvento implements OnInit {
 
   cargar() {
     this.cargando = true;
-    this.http.get<TipoEvento[]>('http://localhost:8080/api/tipos').subscribe({
+    this.http.get<TipoEvento[]>('/api/tipos').subscribe({
       next: (data) => {
         this.tipos    = data;
         this.cargando = false;
@@ -78,7 +78,7 @@ export class TiposEvento implements OnInit {
     }
 
     if (this.editando) {
-      this.http.put(`http://localhost:8080/api/tipos/${this.idEditando}`, this.form.value)
+      this.http.put(`/api/tipos/${this.idEditando}`, this.form.value)
         .subscribe({
           next: () => {
             this.mensajeOk = 'Tipo actualizado correctamente.';
@@ -88,7 +88,7 @@ export class TiposEvento implements OnInit {
           error: () => this.mensajeError = 'Error al actualizar el tipo.'
         });
     } else {
-      this.http.post('http://localhost:8080/api/tipos', this.form.value)
+      this.http.post('/api/tipos', this.form.value)
         .subscribe({
           next: () => {
             this.mensajeOk = 'Tipo creado correctamente.';
@@ -102,7 +102,7 @@ export class TiposEvento implements OnInit {
 
   eliminar(idTipo: number) {
     if (!confirm('¿Eliminar este tipo? Las clases asociadas perderán su categoría.')) return;
-    this.http.delete(`http://localhost:8080/api/tipos/${idTipo}`).subscribe({
+    this.http.delete(`/api/tipos/${idTipo}`).subscribe({
       next: () => {
         this.tipos     = this.tipos.filter(t => t.idTipo !== idTipo);
         this.mensajeOk = 'Tipo eliminado.';
