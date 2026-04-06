@@ -41,7 +41,7 @@ export class Registro {
     this.cargando    = true;
     this.mensajeError = '';
 
-    this.http.post('http://localhost:8080/api/auth/registro', this.form.value).subscribe({
+    this.http.post('/api/auth/registro', this.form.value).subscribe({
       next: () => {
         this.cargando  = false;
         this.mensajeOk = 'Cuenta creada correctamente. Ya puedes iniciar sesión.';

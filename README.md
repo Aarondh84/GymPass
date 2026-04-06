@@ -20,7 +20,7 @@ Proyecto transversal del ciclo DAW (Desarrollo Web en Entorno Cliente).
 
 - Node.js 18 o superior
 - Angular CLI 19
-- Backend Spring Boot arrancado en `http://localhost:8080`
+- Backend Spring Boot arrancado en ``
 - MySQL con la base de datos `db_reto` creada
 
 ---

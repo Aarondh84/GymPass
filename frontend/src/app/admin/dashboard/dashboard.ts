@@ -19,7 +19,7 @@ export class Dashboard implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<any>('http://localhost:8080/api/admin/stats').subscribe({
+    this.http.get<any>('/api/admin/stats').subscribe({
       next: (data) => {
         this.totalEventos  = data.totalEventos;
         this.totalReservas = data.totalReservas;

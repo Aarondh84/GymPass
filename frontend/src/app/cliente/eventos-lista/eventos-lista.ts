@@ -52,7 +52,7 @@ export class EventosLista implements OnInit {
   }
 
   cargarTipos() {
-    this.http.get<any[]>('http://localhost:8080/api/tipos').subscribe({
+    this.http.get<any[]>('/api/eventos-lista').subscribe({
       next: (data) => this.tipos = data,
       error: ()    => {}
     });

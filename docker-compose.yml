@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: gympass-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: db_reto
+      MYSQL_USER: gympass
+      MYSQL_PASSWORD: GymPass2026!
+      MYSQL_ROOT_PASSWORD: RootGymPass2026!
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/bd_reto.sql:/docker-entrypoint-initdb.d/bd_reto.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - gympass-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gympass-backend
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_reto?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: gympass
+      SPRING_DATASOURCE_PASSWORD: GymPass2026!
+      JWT_SECRET: dWthRYPU96VXrPS5UK5hut8Ho/8iJNMocRzUgmQUWdI=
+      JWT_EXPIRATION: 86400000
+    ports:
+      - "8080:8080"
+    networks:
+      - gympass-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gympass-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - gympass-network
+
+volumes:
+  mysql_data:
+
+networks:
+  gympass-network:
+    driver: bridge

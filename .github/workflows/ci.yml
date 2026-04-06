@@ -1,0 +1,60 @@
+name: GymPass CI
+
+on:
+  push:
+    branches: [ main, AaronDiaz ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Compilar backend con Maven
+        working-directory: ./backend
+        run: ./mvnw clean package -DskipTests
+
+      - name: Guardar JAR como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: backend/target/*.jar
+
+  frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Compilar frontend para produccion
+        working-directory: ./frontend
+        run: npm run build -- --configuration production
+
+      - name: Guardar dist como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/

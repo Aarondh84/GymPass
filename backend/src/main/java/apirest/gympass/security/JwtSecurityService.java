@@ -23,7 +23,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtSecurityService {
 
     @Value("${jwt.secret}")
-    private String Secret;
+    private String secret;
 
     @Value("${jwt.expiration}")
     private Long expirationMs;
@@ -34,7 +34,7 @@ public class JwtSecurityService {
      */
     private Key signingKey() {
         // Si el secret está en Base64:
-        byte[] keyBytes = Decoders.BASE64.decode(Secret);
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
     
@@ -68,14 +68,14 @@ public class JwtSecurityService {
      */
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(signingKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+            .setSigningKey(signingKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .getSubject();
     }
     /**
-     * Verifica si un token es real y sigue activo
+     * Comprueba que el token sea autentico y no haya expirado
      * Si el token fue modificado, expiró o la firma no coincide con nuestra clave,
      * este método nos dirá que no es válido.
      * @param token El token a comprobar.

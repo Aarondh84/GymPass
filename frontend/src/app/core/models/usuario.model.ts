@@ -1,8 +1,3 @@
-export interface Perfil {
-  idPerfil: number;
-  nombre:   string;
-}
-
 export interface Usuario {
   username:      string;
   email:         string;
@@ -11,7 +6,7 @@ export interface Usuario {
   direccion?:    string;
   enabled:       number;
   fechaRegistro?: string;
-  perfiles:      Perfil[];
+  perfiles:      string[];
 }
 
 export interface LoginRequest {

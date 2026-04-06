@@ -19,7 +19,7 @@ export class MisReservas implements OnInit {
 
   ngOnInit() {
     const username = this.auth.currentUser()!.username;
-    this.http.get<Reserva[]>(`http://localhost:8080/api/reservas/usuario/${username}`)
+    this.http.get<Reserva[]>(`/api/reservas/usuario/${username}`)
       .subscribe({
         next: (data) => {
           const hoy = new Date();
@@ -37,7 +37,7 @@ export class MisReservas implements OnInit {
   cancelar(idReserva: number) {
     if (!confirm('¿Seguro que quieres cancelar esta reserva?')) return;
 
-    this.http.delete(`http://localhost:8080/api/reservas/${idReserva}`)
+    this.http.delete(`/api/reservas/${idReserva}`)
       .subscribe({
         next: () => {
           this.reservas = this.reservas.filter(r => r.idReserva !== idReserva);

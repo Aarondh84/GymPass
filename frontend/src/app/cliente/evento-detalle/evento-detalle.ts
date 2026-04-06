@@ -41,7 +41,7 @@ export class EventoDetalle implements OnInit {
 
   calcularPlazas() {
     if (!this.evento) return;
-    this.http.get<number>(`http://localhost:8080/api/reservas/plazas/${this.evento.idEvento}`)
+    this.http.get<number>(`/api/reservas/plazas/${this.evento.idEvento}`)
       .subscribe({
         next: (ocupadas) => {
           this.plazasLibres = this.evento!.aforoMaximo - ocupadas;
@@ -63,7 +63,7 @@ export class EventoDetalle implements OnInit {
       cantidad:    1
     };
 
-    this.http.post('http://localhost:8080/api/reservas', reserva).subscribe({
+    this.http.post('/api/reservas', reserva).subscribe({
       next: () => {
         this.mensajeOk  = 'Reserva confirmada. Nos vemos en clase.';
         this.reservando = false;
