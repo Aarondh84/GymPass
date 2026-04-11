@@ -3,11 +3,12 @@ import { Evento } from '../../core/models/evento.model';
 import { EventoService } from '../../core/services/evento';
 import { Navbar } from '../../shared/navbar/navbar';
 import { EventoCard } from '../../shared/evento-card/evento-card';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Navbar, EventoCard],
+  imports: [Navbar, EventoCard, RouterLink],
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
