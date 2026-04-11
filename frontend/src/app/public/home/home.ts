@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Evento } from '../../core/models/evento.model';
 import { EventoService } from '../../core/services/evento';
+import { AuthService } from '../../core/services/auth';
 import { Navbar } from '../../shared/navbar/navbar';
 import { EventoCard } from '../../shared/evento-card/evento-card';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -12,11 +13,14 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
-  eventos:  Evento[] = [];
-  cargando  = true;
-  error     = false;
+  eventos:   Evento[] = [];
+  cargando   = true;
+  error      = false;
 
-  constructor(private eventoService: EventoService) {}
+  constructor(
+    private eventoService: EventoService,
+    public  auth:          AuthService
+  ) {}
 
   ngOnInit() {
     this.eventoService.getDestacados().subscribe({

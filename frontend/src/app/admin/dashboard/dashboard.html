@@ -5,7 +5,7 @@
 
   @if (cargando) {
     <div class="text-center py-5">
-      <div class="spinner-border text-dark" role="status">
+      <div class="spinner-border" role="status">
         <span class="visually-hidden">Cargando...</span>
       </div>
     </div>
@@ -19,43 +19,57 @@
 
   @if (!cargando && !error) {
     <div class="row g-4 mb-5">
-      <div class="col-md-3">
-        <div class="card text-center shadow-sm border-0">
-          <div class="card-body py-4">
-            <h2 class="fw-bold text-dark">{{ totalEventos }}</h2>
-            <p class="text-muted mb-0">Total Clases</p>
+
+      <div class="col-md-3 col-6">
+        <a routerLink="/admin/eventos" class="text-decoration-none">
+          <div class="card text-center h-100">
+            <div class="card-body py-4">
+              <h2 class="fw-bold" style="color: var(--gp-secondary)">{{ totalEventos }}</h2>
+              <p class="text-muted mb-0 small">Total Clases</p>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
-      <div class="col-md-3">
-        <div class="card text-center shadow-sm border-0">
-          <div class="card-body py-4">
-            <h2 class="fw-bold text-success">{{ totalActivos }}</h2>
-            <p class="text-muted mb-0">Clases Activas</p>
+
+      <div class="col-md-3 col-6">
+        <a routerLink="/admin/eventos" class="text-decoration-none">
+          <div class="card text-center h-100">
+            <div class="card-body py-4">
+              <h2 class="fw-bold text-success">{{ totalActivos }}</h2>
+              <p class="text-muted mb-0 small">Clases Activas</p>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
-      <div class="col-md-3">
-        <div class="card text-center shadow-sm border-0">
-          <div class="card-body py-4">
-            <h2 class="fw-bold text-primary">{{ totalReservas }}</h2>
-            <p class="text-muted mb-0">Reservas</p>
+
+      <div class="col-md-3 col-6">
+        <a routerLink="/admin/usuarios" class="text-decoration-none">
+          <div class="card text-center h-100">
+            <div class="card-body py-4">
+              <h2 class="fw-bold" style="color: var(--gp-primary)">{{ totalReservas }}</h2>
+              <p class="text-muted mb-0 small">Reservas</p>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
-      <div class="col-md-3">
-        <div class="card text-center shadow-sm border-0">
-          <div class="card-body py-4">
-            <h2 class="fw-bold text-secondary">{{ totalUsuarios }}</h2>
-            <p class="text-muted mb-0">Usuarios</p>
+
+      <div class="col-md-3 col-6">
+        <a routerLink="/admin/usuarios" class="text-decoration-none">
+          <div class="card text-center h-100">
+            <div class="card-body py-4">
+              <h2 class="fw-bold text-secondary">{{ totalUsuarios }}</h2>
+              <p class="text-muted mb-0 small">Usuarios</p>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
+
     </div>
 
-    <div class="d-flex gap-3">
+    <div class="d-flex flex-wrap gap-3">
       <a routerLink="/admin/eventos" class="btn btn-dark">Gestionar Clases</a>
       <a routerLink="/admin/usuarios" class="btn btn-outline-dark">Gestionar Usuarios</a>
+      <a routerLink="/admin/tipos-evento" class="btn btn-outline-dark">Gestionar Tipos</a>
     </div>
   }
 </div>
