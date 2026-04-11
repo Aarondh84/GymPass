@@ -20,6 +20,7 @@ export class EventosLista implements OnInit {
   tipoSeleccionado  = '';
   filtro            = 'activos';
   cargando          = true;
+  error             = false;
 
   constructor(
     private eventoService: EventoService,
@@ -35,6 +36,7 @@ export class EventosLista implements OnInit {
 
   cargarEventos() {
     this.cargando = true;
+    this.error    = false;
     const peticion =
       this.filtro === 'destacados' ? this.eventoService.getDestacados() :
       this.filtro === 'cancelados' ? this.eventoService.getCancelados() :
@@ -47,12 +49,15 @@ export class EventosLista implements OnInit {
         this.eventosFiltrados = data;
         this.cargando         = false;
       },
-      error: () => this.cargando = false
+      error: () => {
+        this.cargando = false;
+        this.error    = true;
+      }
     });
   }
 
   cargarTipos() {
-    this.http.get<any[]>('/api/eventos-lista').subscribe({
+    this.http.get<any[]>('/api/tipos').subscribe({
       next: (data) => this.tipos = data,
       error: ()    => {}
     });

@@ -14,6 +14,7 @@ import { Navbar } from '../../shared/navbar/navbar';
 export class MisReservas implements OnInit {
   reservas: Reserva[] = [];
   cargando  = true;
+  error     = false;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -30,13 +31,15 @@ export class MisReservas implements OnInit {
           });
           this.cargando = false;
         },
-        error: () => this.cargando = false
+        error: () => {
+          this.cargando = false;
+          this.error    = true;
+        }
       });
   }
 
   cancelar(idReserva: number) {
     if (!confirm('¿Seguro que quieres cancelar esta reserva?')) return;
-
     this.http.delete(`/api/reservas/${idReserva}`)
       .subscribe({
         next: () => {

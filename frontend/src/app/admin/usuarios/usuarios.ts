@@ -12,6 +12,7 @@ import { Navbar } from '../../shared/navbar/navbar';
 export class Usuarios implements OnInit {
   usuarios: Usuario[] = [];
   cargando  = true;
+  error     = false;
   mensajeOk = '';
 
   constructor(private http: HttpClient) {}
@@ -20,12 +21,16 @@ export class Usuarios implements OnInit {
 
   cargar() {
     this.cargando = true;
+    this.error    = false;
     this.http.get<Usuario[]>('/api/usuarios').subscribe({
       next: (data) => {
         this.usuarios = data;
         this.cargando = false;
       },
-      error: () => this.cargando = false
+      error: () => {
+        this.cargando = false;
+        this.error    = true;
+      }
     });
   }
 

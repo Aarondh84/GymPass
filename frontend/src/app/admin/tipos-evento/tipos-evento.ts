@@ -23,6 +23,7 @@ export class TiposEvento implements OnInit {
   mensajeOk     = '';
   mensajeError  = '';
   idEditando    = 0;
+  error         = false;
 
   form: FormGroup;
 
@@ -39,15 +40,19 @@ export class TiposEvento implements OnInit {
   ngOnInit() { this.cargar(); }
 
   cargar() {
-    this.cargando = true;
-    this.http.get<TipoEvento[]>('/api/tipos').subscribe({
-      next: (data) => {
-        this.tipos    = data;
-        this.cargando = false;
-      },
-      error: () => this.cargando = false
-    });
-  }
+  this.cargando = true;
+  this.error    = false;
+  this.http.get<TipoEvento[]>('/api/tipos').subscribe({
+    next: (data) => {
+      this.tipos    = data;
+      this.cargando = false;
+    },
+    error: () => {
+      this.cargando = false;
+      this.error    = true;
+    }
+  });
+}
 
   nuevo() {
     this.form.reset();

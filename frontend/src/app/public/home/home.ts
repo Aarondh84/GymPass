@@ -11,19 +11,21 @@ import { EventoCard } from '../../shared/evento-card/evento-card';
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
-  eventos: Evento[] = [];
-  cargando = true;
+  eventos:  Evento[] = [];
+  cargando  = true;
+  error     = false;
 
   constructor(private eventoService: EventoService) {}
 
   ngOnInit() {
     this.eventoService.getDestacados().subscribe({
       next: (data) => {
-        this.eventos = data;
+        this.eventos  = data;
         this.cargando = false;
       },
       error: () => {
         this.cargando = false;
+        this.error    = true;
       }
     });
   }

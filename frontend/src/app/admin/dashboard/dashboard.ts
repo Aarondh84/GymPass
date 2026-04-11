@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Navbar } from '../../shared/navbar/navbar';
 import { RouterLink } from '@angular/router';
+import { Navbar } from '../../shared/navbar/navbar';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,11 +10,12 @@ import { RouterLink } from '@angular/router';
   templateUrl: './dashboard.html',
 })
 export class Dashboard implements OnInit {
-  totalEventos    = 0;
-  totalReservas   = 0;
-  totalUsuarios   = 0;
-  totalActivos    = 0;
-  cargando        = true;
+  totalEventos  = 0;
+  totalReservas = 0;
+  totalUsuarios = 0;
+  totalActivos  = 0;
+  cargando      = true;
+  error         = false;
 
   constructor(private http: HttpClient) {}
 
@@ -27,7 +28,10 @@ export class Dashboard implements OnInit {
         this.totalActivos  = data.totalActivos;
         this.cargando      = false;
       },
-      error: () => this.cargando = false
+      error: () => {
+        this.cargando = false;
+        this.error    = true;
+      }
     });
   }
 }
