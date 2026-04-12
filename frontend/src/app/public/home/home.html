@@ -1,25 +1,65 @@
 <app-navbar></app-navbar>
 
-<div class="container mt-4">
-  <div class="text-center mb-5">
-    <h1 class="display-5 fw-bold">Bienvenido a GymPass</h1>
-    <p class="lead text-muted">Reserva tu clase favorita en segundos</p>
-  </div>
+<div class="gp-hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-8 col-lg-6">
 
-  <h4 class="mb-3">Clases Destacadas</h4>
+        @if (!auth.isLoggedIn()) {
+          <h1 class="mb-3">Tu gimnasio,<br>a un clic.</h1>
+          <p class="lead mb-4">Reserva tu clase favorita en segundos. Sin colas, sin esperas.</p>
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
+            <a routerLink="/registro" class="btn btn-primary">Empieza ahora</a>
+            <a routerLink="/login" class="btn btn-outline-light">Iniciar sesion</a>
+          </div>
+        }
+
+        @if (auth.isLoggedIn() && auth.isCliente()) {
+          <h1 class="mb-3">Hola, {{ auth.currentUser()?.username }}</h1>
+          <p class="lead mb-4">Elige tu clase y reserva en segundos.</p>
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
+            <a routerLink="/clientes/activos" class="btn btn-primary">Ver clases</a>
+            <a routerLink="/clientes/misReservas" class="btn btn-outline-light">Mis reservas</a>
+          </div>
+        }
+
+        @if (auth.isLoggedIn() && auth.isAdmin()) {
+          <h1 class="mb-3">Panel de administracion</h1>
+          <p class="lead mb-4">Gestiona las clases, usuarios y reservas del gimnasio.</p>
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
+            <a routerLink="/admin/dashboard" class="btn btn-primary">Ir al dashboard</a>
+            <a routerLink="/admin/eventos" class="btn btn-outline-light">Gestionar clases</a>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h2 class="gp-section-title">Clases Destacadas</h2>
 
   @if (cargando) {
     <div class="text-center py-5">
-      <div class="spinner-border text-dark" role="status"></div>
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
       <p class="mt-2 text-muted">Cargando clases...</p>
     </div>
   }
 
-  @if (!cargando && eventos.length === 0) {
+  @if (error) {
+    <div class="alert alert-danger" role="alert">
+      No se pudieron cargar las clases. Comprueba tu conexion e intentalo de nuevo.
+    </div>
+  }
+
+  @if (!cargando && !error && eventos.length === 0) {
     <div class="alert alert-info">No hay clases destacadas en este momento.</div>
   }
 
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
     @for (evento of eventos; track evento.idEvento) {
       <div class="col">
         <app-evento-card [evento]="evento"></app-evento-card>

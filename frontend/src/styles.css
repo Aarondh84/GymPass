@@ -1,1 +1,260 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* ============================================
+   GYMPASS - PALETA DE COLORES Y ESTILOS GLOBALES
+   ============================================ */
+
+:root {
+  --gp-primary:     #E84C1E;
+  --gp-primary-dark:#C23A10;
+  --gp-secondary:   #1A1A2E;
+  --gp-accent:      #F5A623;
+  --gp-light:       #F8F9FA;
+  --gp-text:        #212529;
+  --gp-muted:       #6C757D;
+  --gp-success:     #28A745;
+  --gp-danger:      #DC3545;
+}
+
+/* ============================================
+   TIPOGRAFIA
+   ============================================ */
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--gp-light);
+  color: var(--gp-text);
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+
+.navbar {
+  background-color: var(--gp-secondary) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--gp-primary) !important;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.nav-link {
+  color: rgba(255,255,255,0.85) !important;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--gp-primary) !important;
+}
+
+/* Navbar desplegada en movil */
+@media (max-width: 991px) {
+  .navbar-collapse .navbar-nav.ms-auto {
+    flex-direction: column !important;
+    width: 100%;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+  }
+
+  .navbar-collapse .navbar-nav.ms-auto .nav-item {
+    width: 100%;
+  }
+
+  .navbar-collapse .navbar-nav.ms-auto .btn {
+    width: 100% !important;
+    text-align: center;
+  }
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+.btn-primary, .btn-dark {
+  background-color: var(--gp-primary) !important;
+  border-color: var(--gp-primary) !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:hover, .btn-dark:hover {
+  background-color: var(--gp-primary-dark) !important;
+  border-color: var(--gp-primary-dark) !important;
+}
+
+.btn-outline-dark {
+  color: var(--gp-primary) !important;
+  border-color: var(--gp-primary) !important;
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--gp-primary) !important;
+  color: white !important;
+}
+
+.btn-warning {
+  background-color: var(--gp-accent) !important;
+  border-color: var(--gp-accent) !important;
+  color: var(--gp-secondary) !important;
+  font-weight: 700;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+
+.card {
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(232,76,30,0.15) !important;
+}
+
+.card-header {
+  border-radius: 12px 12px 0 0 !important;
+  font-weight: 700;
+}
+
+.card-header.bg-dark {
+  background-color: var(--gp-secondary) !important;
+}
+
+/* ============================================
+   TABLAS
+   ============================================ */
+
+.table-dark {
+  background-color: var(--gp-secondary) !important;
+}
+
+.table thead.table-dark th {
+  background-color: var(--gp-secondary) !important;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+
+.badge.bg-success { background-color: var(--gp-success) !important; }
+.badge.bg-danger  { background-color: var(--gp-danger) !important; }
+
+/* ============================================
+   FORMULARIOS
+   ============================================ */
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--gp-primary);
+  box-shadow: 0 0 0 0.2rem rgba(232,76,30,0.2);
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+}
+
+/* ============================================
+   SPINNER
+   ============================================ */
+
+.spinner-border.text-dark {
+  color: var(--gp-primary) !important;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.gp-hero {
+  background: linear-gradient(135deg, var(--gp-secondary) 0%, #2D2D44 100%);
+  color: white;
+  padding: 5rem 0;
+  margin-bottom: 3rem;
+}
+
+.gp-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.gp-hero .lead {
+  color: rgba(255,255,255,0.75);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
+.gp-hero .btn {
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 50px;
+}
+
+/* ============================================
+   SECCION DE CLASES
+   ============================================ */
+
+.gp-section-title {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--gp-secondary);
+  border-left: 4px solid var(--gp-primary);
+  padding-left: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .gp-hero {
+    padding: 3rem 1rem;
+    text-align: center;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+
+  /* Solo botones dentro de formularios ocupan ancho completo */
+  form .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Botones de navbar, hero y tablas NO se estiran */
+  .navbar .btn,
+  .gp-hero .btn,
+  .d-flex .btn {
+    width: auto !important;
+    margin-bottom: 0;
+  }
+
+  h4.fw-bold {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

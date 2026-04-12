@@ -37,14 +37,10 @@ export class Login {
 
     this.auth.login(this.form.value).subscribe({
   next: (response) => {
-    this.auth.saveSession(response);  // ← añadir esta línea
-    this.cargando = false;
-    if (this.auth.isAdmin()) {
-      this.router.navigate(['/admin/dashboard']);
-    } else {
-      this.router.navigate(['/clientes/activos']);
-    }
-  },
+  this.auth.saveSession(response);
+  this.cargando = false;
+  this.router.navigate(['/home']);
+},
   error: () => {
     this.cargando    = false;
     this.mensajeError = 'Usuario o contraseña incorrectos.';
