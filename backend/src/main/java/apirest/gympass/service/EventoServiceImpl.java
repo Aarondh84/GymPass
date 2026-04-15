@@ -41,6 +41,24 @@ public class EventoServiceImpl implements EventoService {
 		
 		return "Reserva realizada con éxito";
 	}
+
+	@Override
+	public Evento findById(Integer id) {
+		return eventoRepo.findById(id).orElse(null);
+	}
+
+	@Override
+	public Evento guardar(Evento evento) {
+		if (evento.getEstado() == null) {
+			evento.setEstado(EstadoEvento.ACTIVO);
+		}
+		return eventoRepo.save(evento);
+	}
+
+	@Override
+	public void eliminar(Integer id) {
+		eventoRepo.deleteById(id);
+	}
 	
 	
 	private EventoDTO converToDto(Evento evento) {
