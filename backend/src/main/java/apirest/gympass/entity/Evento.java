@@ -48,7 +48,7 @@ public class Evento {
 	@Column(name = "MINIMO_ASISTENCIA")
 	private Integer minimoAsistencia;
 	
-	private float precio;
+	private double precio;
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_TIPO")
