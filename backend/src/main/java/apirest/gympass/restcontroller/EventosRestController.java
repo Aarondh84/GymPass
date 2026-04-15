@@ -1,87 +1,62 @@
 package apirest.gympass.restcontroller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import apirest.gympass.entity.EstadoEvento;
+import apirest.gympass.entity.Evento;
 import apirest.gympass.entityDto.EventoDTO;
 import apirest.gympass.service.EventoService;
 
 @RestController
-@RequestMapping("/api/eventos")
+@RequestMapping("/api/eventos") 
+@CrossOrigin(origins = "http://localhost:4200")
 public class EventosRestController {
-	@Autowired
-	private EventoService eventoService;
 
-//endpoints publicos de clientes
-	@GetMapping("/activos")
-    public List<EventoDTO> listarActivos() {
-        // Devuelve eventos con estado "ACTIVO" 
+    @Autowired
+    private EventoService eventoService;
+
+    // Ver eventos activos (PÚBLICO)
+    @GetMapping("/activos")
+    public List<Evento> getActivos() {
         return eventoService.findByEstado(EstadoEvento.ACTIVO);
     }
 
+    // Ver eventos destacados (PÚBLICO)
     @GetMapping("/destacados")
-    public List<EventoDTO> listarDestacados() {
-        // Devuelve eventos donde destacado es 'S' 
+    public List<Evento> getDestacados() {
         return eventoService.findByDestacado("S");
     }
 
-    @GetMapping("/terminados")
-    public List<EventoDTO> listarTerminados() {
-        // Eventos que ya han pasado de fecha 
-        return eventoService.findByEstado(EstadoEvento.TERMINADO);
+    // Ver un evento por su ID
+    @GetMapping("/{id}")
+    public ResponseEntity<EventoDTO> getUno(@PathVariable int id) {
+        EventoDTO dto = eventoService.findById(id);
+        if (dto != null) {
+            return ResponseEntity.ok(dto);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/cancelados")
-    public List<EventoDTO> listarCancelados() {
-        // Eventos anulados por la administración 
-        return eventoService.findByEstado(EstadoEvento.CANCELADO);
-    }
-
-    @GetMapping("/detalle/{id}")
-    public ResponseEntity<EventoDTO> verDetalle(@PathVariable int id) {
-        // Muestra todos los datos del evento seleccionado 
-        EventoDTO evento = eventoService.findById(id);
-        return ResponseEntity.ok(evento);
-    }
-
-//endpoints admin
-
+    // 4. Crear o editar un evento (SOLO ADMIN en SecurityConfig)
     @PostMapping("/alta")
-    public ResponseEntity<EventoDTO> altaEvento(@RequestBody EventoDTO eventoDTO) {
-        // Crea el evento con estado inicial "ACTIVO" 
-        EventoDTO nuevo = eventoService.save(eventoDTO);
-        return ResponseEntity.status(201).body(nuevo);
+    public ResponseEntity<EventoDTO> crear(@RequestBody EventoDTO eventoDTO) {
+        return new ResponseEntity<>(eventoService.save(eventoDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<EventoDTO> editarEvento(@PathVariable int id, @RequestBody EventoDTO eventoDTO) {
-        // Modifica los datos del evento en la base de datos 
-        EventoDTO editado = eventoService.save(eventoDTO);
-        return ResponseEntity.ok(editado);
-    }
-
-    @PatchMapping("/cancelar/{id}")
-    public ResponseEntity<Void> cancelarEvento(@PathVariable int id) {
-        // Solo cambiamos el estado a CANCELADO 
+    // Cancelar un evento (Cambiamos estado, no borramos)
+    @PutMapping("/cancelar/{id}")
+    public ResponseEntity<Void> cancelar(@PathVariable int id) {
         eventoService.cancelarEvento(id);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarEvento(@PathVariable int id) {
-        // Eliminación física del registro
+    // Eliminar físicamente un evento
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable int id) {
         eventoService.delete(id);
         return ResponseEntity.noContent().build();
     }

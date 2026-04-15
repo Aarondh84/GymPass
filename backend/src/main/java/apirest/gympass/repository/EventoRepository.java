@@ -1,12 +1,12 @@
-package apirest.gympass.Repository;
+package apirest.gympass.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import apirest.gympass.entities.EstadoEvento;
-import apirest.gympass.entities.Evento;
+import apirest.gympass.entity.EstadoEvento;
+import apirest.gympass.entity.Evento;
 
 @Repository
 public interface EventoRepository extends JpaRepository<Evento,Integer>{

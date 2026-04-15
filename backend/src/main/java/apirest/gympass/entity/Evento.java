@@ -1,11 +1,6 @@
 package apirest.gympass.entity;
 
-<<<<<<< HEAD:backend/src/main/java/apirest/gympass/entity/Evento.java
-=======
-
->>>>>>> 6826ea662c522beac7532f53375f54739f07c73a:backend/src/main/java/apirest/gympass/entities/Evento.java
 import java.time.LocalDate;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,12 +47,11 @@ public class Evento {
 	@Column(name = "MINIMO_ASISTENCIA")
 	private Integer minimoAsistencia;
 	
-<<<<<<< HEAD:backend/src/main/java/apirest/gympass/entity/Evento.java
+
 	private double precio;
-=======
-	private Float precio;
->>>>>>> 6826ea662c522beac7532f53375f54739f07c73a:backend/src/main/java/apirest/gympass/entities/Evento.java
+
 	
+
 	@ManyToOne
 	@JoinColumn(name = "ID_TIPO")
 	private Tipo tipo;
