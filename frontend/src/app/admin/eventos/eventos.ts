@@ -69,8 +69,8 @@ export class Eventos implements OnInit {
     this.mensajeError = '';
   }
 
-  editar(evento: Evento) {
-    this.form.setValue({
+  editar(evento: any) {
+    this.form.patchValue({
       nombre:           evento.nombre,
       descripcion:      evento.descripcion,
       fechaInicio:      evento.fechaInicio,
@@ -80,7 +80,7 @@ export class Eventos implements OnInit {
       minimoAsistencia: evento.minimoAsistencia,
       precio:           evento.precio,
       destacado:        evento.destacado,
-      idTipo:           evento.idTipo
+      idTipo:           evento.tipo ? evento.tipo.idTipo : 1
     });
     this.idEditando   = evento.idEvento;
     this.editando     = true;
