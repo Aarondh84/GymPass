@@ -78,4 +78,13 @@ public class EventoController {
   public ResponseEntity<List<Evento>> getTerminados() {
     return ResponseEntity.ok(eventoService.findByEstado(EstadoEvento.TERMINADO));
   }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Evento> getById(@PathVariable Integer id) {
+    Evento evento = eventoService.findById(id);
+    if (evento == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(evento);
+  }
 }
