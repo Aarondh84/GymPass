@@ -9,4 +9,7 @@ public interface EventoService {
 	List<Evento> findByEstado (EstadoEvento estado);
 	List<Evento> findByDestacado (String destacado);
 
+	Evento findById (Integer id);
+	Evento guardar (Evento evento);
+	void eliminar (Integer id);
 }

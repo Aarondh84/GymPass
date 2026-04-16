@@ -11,8 +11,8 @@
 
     <select class="form-select w-auto" [(ngModel)]="tipoSeleccionado" (change)="filtrarPorTipo()">
       <option value="">Todos los tipos</option>
-      @for (tipo of tipos; track tipo.idTipo) {
-        <option [value]="tipo.idTipo">{{ tipo.nombre }}</option>
+      @for (tipo of tipos; track $index) {
+        <option [value]="tipo.id">{{ tipo.nombre }}</option>
       }
     </select>
   </div>
