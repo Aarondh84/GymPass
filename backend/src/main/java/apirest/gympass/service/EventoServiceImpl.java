@@ -9,8 +9,10 @@ import apirest.gympass.entity.EstadoEvento;
 import apirest.gympass.entity.Evento;
 import apirest.gympass.entityDto.EventoDTO;
 import apirest.gympass.repository.EventoRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class EventoServiceImpl implements EventoService {
 
 	@Autowired

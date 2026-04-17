@@ -5,6 +5,7 @@ import { Evento } from '../../core/models/evento.model';
 import { EventoService } from '../../core/services/evento';
 import { AuthService } from '../../core/services/auth';
 import { Navbar } from '../../shared/navbar/navbar';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-evento-detalle',
@@ -41,7 +42,8 @@ export class EventoDetalle implements OnInit {
 
   calcularPlazas() {
     if (!this.evento) return;
-    this.http.get<number>(`/api/reservas/plazas/${this.evento.idEvento}`)
+
+    this.http.get<number>(`${environment.apiUrl}/reservas/plazas/${this.evento.idEvento}`)
       .subscribe({
         next: (ocupadas) => {
           this.plazasLibres = this.evento!.aforoMaximo - ocupadas;
@@ -63,7 +65,7 @@ export class EventoDetalle implements OnInit {
       cantidad:    1
     };
 
-    this.http.post('/api/reservas', reserva).subscribe({
+    this.http.post(`${environment.apiUrl}/reservas`, reserva).subscribe({
       next: () => {
         this.mensajeOk  = 'Reserva confirmada. Nos vemos en clase.';
         this.reservando = false;
