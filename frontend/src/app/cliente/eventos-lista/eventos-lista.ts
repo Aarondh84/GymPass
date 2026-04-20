@@ -6,6 +6,7 @@ import { Evento } from '../../core/models/evento.model';
 import { EventoService } from '../../core/services/evento';
 import { Navbar } from '../../shared/navbar/navbar';
 import { EventoCard } from '../../shared/evento-card/evento-card';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-eventos-lista',
@@ -57,7 +58,7 @@ export class EventosLista implements OnInit {
   }
 
   cargarTipos() {
-    this.http.get<any[]>('/api/tipos').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/tipos`).subscribe({
       next: (data) => this.tipos = data,
       error: ()    => {}
     });
