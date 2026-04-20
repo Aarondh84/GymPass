@@ -2,7 +2,6 @@ package apirest.gympass.entity;
 
 import java.time.LocalDate;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -48,8 +47,11 @@ public class Evento {
 	@Column(name = "MINIMO_ASISTENCIA")
 	private Integer minimoAsistencia;
 	
-	private float precio;
+
+	private double precio;
+
 	
+
 	@ManyToOne
 	@JoinColumn(name = "ID_TIPO")
 	private Tipo tipo;

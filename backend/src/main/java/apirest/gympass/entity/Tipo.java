@@ -20,7 +20,7 @@ public class Tipo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_TIPO")
-	private Long id;
+	private int idTipo;
 	
 	private String nombre;
 	private String descripcion;

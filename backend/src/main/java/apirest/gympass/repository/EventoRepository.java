@@ -9,9 +9,8 @@ import apirest.gympass.entity.EstadoEvento;
 import apirest.gympass.entity.Evento;
 
 @Repository
-public interface EventoRepository extends JpaRepository<Evento,Integer> {
-		List<Evento>findByDestacado(String destacado);
-		List<Evento>findByEstado(EstadoEvento estado);
+public interface EventoRepository extends JpaRepository<Evento,Integer>{
+	List<Evento>findByDestacado(String destacado);
+	List<Evento>findByEstado(EstadoEvento estado);
 
 }
-
