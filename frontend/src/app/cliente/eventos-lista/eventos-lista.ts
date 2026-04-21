@@ -30,8 +30,10 @@ export class EventosLista implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.filtro = this.route.snapshot.url[0]?.path ?? 'activos';
-    this.cargarEventos();
+    this.route.url.subscribe(url => {
+      this.filtro = url[0]?.path ?? 'activos';
+      this.cargarEventos();
+    })
     this.cargarTipos();
   }
 
@@ -46,13 +48,13 @@ export class EventosLista implements OnInit {
 
     peticion.subscribe({
       next: (data) => {
-        this.eventos          = data;
-        this.eventosFiltrados = data;
-        this.cargando         = false;
+        this.eventos = data;
+        this.filtrarPorTipo();
+        this.cargando = false;
       },
       error: () => {
         this.cargando = false;
-        this.error    = true;
+        this.error = true;
       }
     });
   }
@@ -60,7 +62,7 @@ export class EventosLista implements OnInit {
   cargarTipos() {
     this.http.get<any[]>(`${environment.apiUrl}/tipos`).subscribe({
       next: (data) => this.tipos = data,
-      error: ()    => {}
+      error: (err) => console.error('Error cargando tipos', err)
     });
   }
 
@@ -68,9 +70,11 @@ export class EventosLista implements OnInit {
     if (!this.tipoSeleccionado) {
       this.eventosFiltrados = this.eventos;
     } else {
-      this.eventosFiltrados = this.eventos.filter(
-        e => e.idTipo === Number(this.tipoSeleccionado)
-      );
+      const idBusqueda = Number(this.tipoSeleccionado);
+      this.eventosFiltrados = this.eventos.filter( e => {
+        const idActual = e.tipo ? e.tipo.id : e.idTipo;
+        return idActual === idBusqueda;
+      });
     }
   }
 }

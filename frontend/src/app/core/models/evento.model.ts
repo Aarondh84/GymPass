@@ -10,6 +10,9 @@ export interface Evento {
   aforoMaximo:       number;
   minimoAsistencia:  number;
   precio:            number;
-  idTipo:            number;
-  nombreTipo?:       string;
+  tipo: {
+    id: number;
+    nombre: string;
+  }
+  idTipo?:       number;
 }
