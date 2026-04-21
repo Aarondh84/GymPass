@@ -1,19 +1,25 @@
 package apirest.gympass.entityDto;
 
+import java.time.LocalDate;
+
+import apirest.gympass.entity.EstadoEvento;
 import lombok.Data;
 
 @Data
 public class EventoDTO {
-
-    private Integer idEvento;
+    private int idEvento;
     private String nombre;
-    private String fechaInicio;
-    private Float precio;
-    private Integer aforoMaximo;
- 
-
+    private String descripcion;
+    private LocalDate fechaInicio; 
+    private int duracion; 
+    private String direccion; 
+    private EstadoEvento estado; 
+    private String destacado; 
+    private int aforoMaximo; 
+    private int minimoAsistencia; 
+    private double precio; 
+    private int idTipo; 
 }
-
 
 
 
