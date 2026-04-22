@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import apirest.gympass.entity.Tipo;
 
 @Repository
-public interface TipoRepository extends JpaRepository<Tipo, Long> {
+public interface TipoRepository extends JpaRepository<Tipo, Integer> {
 
 }
