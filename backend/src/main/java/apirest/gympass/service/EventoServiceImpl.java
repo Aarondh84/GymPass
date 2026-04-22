@@ -78,9 +78,19 @@ public class EventoServiceImpl implements EventoService {
         }
     }
 
+    
     @Override
     public void delete(int id) {
-        eventoRepo.deleteById(id);
+        try {
+            // Intentamos el borrado físico
+            eventoRepo.deleteById(id);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            // Si falla porque tiene reservas vinculadas, aplicamos "borrado lógico" (cancelar)
+            System.out.println("No se puede eliminar físicamente: existen reservas vinculadas. Cancelando evento...");
+            cancelarEvento(id);
+        } catch (Exception e) {
+            System.err.println("Error inesperado al eliminar: " + e.getMessage());
+        }
     }
 
     // 3. LÓGICA DE NEGOCIO (Validaciones críticas del PDF)
