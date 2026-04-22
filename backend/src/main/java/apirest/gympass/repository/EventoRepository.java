@@ -12,5 +12,5 @@ import apirest.gympass.entity.Evento;
 public interface EventoRepository extends JpaRepository<Evento,Integer>{
 	List<Evento>findByDestacado(String destacado);
 	List<Evento>findByEstado(EstadoEvento estado);
-	List<Evento>findByIdTipo_idTipo(int idTipo);
+	List<Evento> findByTipo_IdTipo(int idTipo);
 }
