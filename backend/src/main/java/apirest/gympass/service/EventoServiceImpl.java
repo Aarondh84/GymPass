@@ -1,15 +1,18 @@
 package apirest.gympass.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import apirest.gympass.repository.EventoRepository;
 import apirest.gympass.entity.EstadoEvento;
 import apirest.gympass.entity.Evento;
 import apirest.gympass.entityDto.EventoDTO;
+import apirest.gympass.repository.EventoRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class EventoServiceImpl implements EventoService {
 
     @Autowired

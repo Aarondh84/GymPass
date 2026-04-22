@@ -31,7 +31,6 @@ public class EventoController {
 
   @GetMapping("/destacados")
   public ResponseEntity<List<Evento>> getDestacados() {
-    List<Evento> eventosDestacados = eventoService.findByDestacado("SI");
     return ResponseEntity.ok(eventoService.findByDestacado("S"));
   }
 

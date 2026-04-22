@@ -22,6 +22,11 @@ export const routes: Routes = [
       loadComponent: () => import('./cliente/eventos-lista/eventos-lista').then(m => m.EventosLista) },
     { path: 'destacados',
       loadComponent: () => import('./cliente/eventos-lista/eventos-lista').then(m => m.EventosLista) },
+    { path: 'cancelados',
+      loadComponent: () => import('./cliente/eventos-lista/eventos-lista').then(m => m.EventosLista) },
+    { path: 'terminados',
+      loadComponent: () => import('./cliente/eventos-lista/eventos-lista').then(m => m.EventosLista) },
+    
     { path: 'detalle/:id',
       loadComponent: () => import('./cliente/evento-detalle/evento-detalle').then(m => m.EventoDetalle) },
     { path: 'misReservas',

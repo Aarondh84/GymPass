@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Reserva } from '../../core/models/reserva.model';
 import { AuthService } from '../../core/services/auth';
 import { Navbar } from '../../shared/navbar/navbar';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-mis-reservas',
@@ -20,15 +21,18 @@ export class MisReservas implements OnInit {
 
   ngOnInit() {
     const username = this.auth.currentUser()!.username;
-    this.http.get<Reserva[]>(`/api/reservas/usuario/${username}`)
+    this.http.get<Reserva[]>(`${environment.apiUrl}/reservas/usuario/${username}`)
       .subscribe({
         next: (data) => {
           const hoy = new Date();
           hoy.setHours(0, 0, 0, 0);
+          this.reservas = data
+          /*
           this.reservas = data.filter(r => {
             if (!r.fechaInicio) return true;
             return new Date(r.fechaInicio) >= hoy;
           });
+          */
           this.cargando = false;
         },
         error: () => {
@@ -40,7 +44,7 @@ export class MisReservas implements OnInit {
 
   cancelar(idReserva: number) {
     if (!confirm('¿Seguro que quieres cancelar esta reserva?')) return;
-    this.http.delete(`/api/reservas/${idReserva}`)
+    this.http.delete(`${environment.apiUrl}/reservas/${idReserva}`)
       .subscribe({
         next: () => {
           this.reservas = this.reservas.filter(r => r.idReserva !== idReserva);
