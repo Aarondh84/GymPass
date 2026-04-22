@@ -13,7 +13,7 @@ public class EventoDTO {
     private LocalDate fechaInicio; 
     private int duracion; 
     private String direccion; 
-    private EstadoEvento estado; 
+    private String estado; 
     private String destacado; 
     private int aforoMaximo; 
     private int minimoAsistencia; 
