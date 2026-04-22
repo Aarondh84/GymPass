@@ -39,7 +39,7 @@ export class EventoService {
   }
 
   cancelar(id: number) {
-    return this.http.patch(`${this.apiUrl}/cancelar/${id}`, {});
+    return this.http.patch(`${this.apiUrl}/${id}/cancelar`, {});
   }
 
   eliminar(id: number) {

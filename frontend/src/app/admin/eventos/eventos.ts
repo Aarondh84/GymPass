@@ -70,24 +70,24 @@ export class Eventos implements OnInit {
   }
 
   editar(evento: any) {
-    this.form.patchValue({
-      nombre:           evento.nombre,
-      descripcion:      evento.descripcion,
-      fechaInicio:      evento.fechaInicio,
-      duracion:         evento.duracion,
-      direccion:        evento.direccion,
-      aforoMaximo:      evento.aforoMaximo,
-      minimoAsistencia: evento.minimoAsistencia,
-      precio:           evento.precio,
-      destacado:        evento.destacado,
-      idTipo:           evento.tipo ? evento.tipo.idTipo : 1
-    });
-    this.idEditando   = evento.idEvento;
-    this.editando     = true;
-    this.modoForm     = true;
-    this.mensajeOk    = '';
-    this.mensajeError = '';
-  }
+  this.form.patchValue({
+    nombre:           evento.nombre,
+    descripcion:      evento.descripcion,
+    fechaInicio:      evento.fechaInicio,
+    duracion:         evento.duracion,
+    direccion:        evento.direccion,
+    aforoMaximo:      evento.aforoMaximo,
+    minimoAsistencia: evento.minimoAsistencia,
+    precio:           evento.precio,
+    destacado:        evento.destacado,
+    idTipo:           evento.idTipo ?? 1
+  });
+  this.idEditando   = evento.idEvento;
+  this.editando     = true;
+  this.modoForm     = true;
+  this.mensajeOk    = '';
+  this.mensajeError = '';
+}
 
   cancelarForm() {
     this.modoForm = false;

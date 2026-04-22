@@ -1,8 +1,6 @@
 package apirest.gympass.entityDto;
 
 import java.time.LocalDate;
-
-import apirest.gympass.entity.EstadoEvento;
 import lombok.Data;
 
 @Data
@@ -18,7 +16,8 @@ public class EventoDTO {
     private int aforoMaximo; 
     private int minimoAsistencia; 
     private double precio; 
-    private int idTipo; 
+    private int idTipo;
+    private String nombreTipo;
 }
 
 

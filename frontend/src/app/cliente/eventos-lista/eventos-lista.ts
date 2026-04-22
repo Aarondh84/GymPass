@@ -72,7 +72,7 @@ export class EventosLista implements OnInit {
     } else {
       const idBusqueda = Number(this.tipoSeleccionado);
       this.eventosFiltrados = this.eventos.filter( e => {
-        const idActual = e.tipo ? e.tipo.id : e.idTipo;
+        const idActual = e.idTipo;
         return idActual === idBusqueda;
       });
     }

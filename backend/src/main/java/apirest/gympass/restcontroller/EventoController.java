@@ -1,7 +1,7 @@
 package apirest.gympass.restcontroller;
 
 import java.util.List;
-import org.springframework.http.HttpStatus; 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +11,13 @@ import apirest.gympass.service.EventoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/eventos") 
+@RequestMapping("/api/eventos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class EventoController {
 
     private final EventoService eventoService;
 
-    // --- PÚBLICO / CLIENTES --- 
+    // --- PÚBLICO / CLIENTES ---
 
     @GetMapping("/activos")
     public ResponseEntity<List<EventoDTO>> getActivos() {
@@ -40,33 +39,32 @@ public class EventoController {
         return ResponseEntity.ok(eventoService.findByEstado(EstadoEvento.TERMINADO));
     }
 
-    @GetMapping("/detalle/{id}") 
+    @GetMapping("/{id}")
     public ResponseEntity<EventoDTO> getById(@PathVariable Integer id) {
         EventoDTO dto = eventoService.findById(id);
         return (dto != null) ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
-    // --- ADMINISTRACIÓN (ROLE_ADMON) 
+    // --- ADMINISTRACIÓN (ROLE_ADMON) ---
 
-    @PostMapping() 
+    @PostMapping
     public ResponseEntity<EventoDTO> crear(@RequestBody EventoDTO eventoDto) {
-        // Al crear, el servicio pondrá el estado ACTIVO por defecto 
         return new ResponseEntity<>(eventoService.save(eventoDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id}") 
+    @PutMapping("/{id}")
     public ResponseEntity<EventoDTO> editar(@PathVariable Integer id, @RequestBody EventoDTO eventoDto) {
         eventoDto.setIdEvento(id);
         return ResponseEntity.ok(eventoService.save(eventoDto));
     }
 
-    @PatchMapping("/cancelar/{id}") 
+    @PatchMapping("/{id}/cancelar")
     public ResponseEntity<Void> cancelar(@PathVariable Integer id) {
         eventoService.cancelarEvento(id);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/eliminar/{id}") 
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         eventoService.delete(id);
         return ResponseEntity.noContent().build();

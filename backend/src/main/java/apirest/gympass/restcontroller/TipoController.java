@@ -1,43 +1,37 @@
 package apirest.gympass.restcontroller;
 
-
 import apirest.gympass.entityDto.TipoDTO;
-
 import apirest.gympass.service.TipoService;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tipos")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
 public class TipoController {
 
-    @Autowired
-    private TipoService tipoService;
+    private final TipoService tipoService;
 
-    @GetMapping("/todos")
+    @GetMapping
     public ResponseEntity<List<TipoDTO>> listar() {
         return ResponseEntity.ok(tipoService.findAll());
     }
 
-    @PostMapping("/alta")
+    @PostMapping
     public ResponseEntity<TipoDTO> crear(@RequestBody TipoDTO tipoDto) {
         return new ResponseEntity<>(tipoService.save(tipoDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TipoDTO> editar(@PathVariable int id, @RequestBody TipoDTO tipoDto) {
         tipoDto.setIdTipo(id);
         return ResponseEntity.ok(tipoService.save(tipoDto));
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
         tipoService.delete(id);
         return ResponseEntity.noContent().build();
