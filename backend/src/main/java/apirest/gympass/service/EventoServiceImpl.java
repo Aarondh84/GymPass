@@ -50,13 +50,16 @@ public class EventoServiceImpl implements EventoService {
     public EventoDTO save(EventoDTO dto) {
         // Convertimos la "maleta" (DTO) a Entidad para JPA 
         Evento evento = convertToEntity(dto);
-        
-        // Regla del reto: al dar de alta el estado es ACTIVO 
-        if (evento.getIdEvento() == 0 || evento.getEstado() == null) {
+        if (evento.getIdEvento() == 0) {
+            evento.setIdEvento(null); 
+        }
+       
+
+        // al dar de alta el estado es ACTIVO 
+        if (evento.getIdEvento() == null || evento.getEstado() == null) {
             evento.setEstado(EstadoEvento.ACTIVO);
         }
         
-        // Si quieres destacar el evento (S/N) 
         if (evento.getDestacado() == null) {
             evento.setDestacado("N");
         }
@@ -113,14 +116,21 @@ public class EventoServiceImpl implements EventoService {
     }
 
     private Evento convertToEntity(EventoDTO dto) {
-        Evento evento = new Evento();
+    	Evento evento = new Evento();
+        
+        // Si el DTO trae un id, lo ponemos. Si es 0, lo dejamos tal cual (el save lo limpiará)
         evento.setIdEvento(dto.getIdEvento());
+        
         evento.setNombre(dto.getNombre());
         evento.setPrecio(dto.getPrecio());
         evento.setAforoMaximo(dto.getAforoMaximo());
         evento.setFechaInicio(dto.getFechaInicio());
         
-        // Buscamos el objeto Tipo real usando tu TipoRepository 
+        // Asegúrate de que el estado también se mapee de vuelta si viene en el DTO
+        if (dto.getEstado() != null) {
+            evento.setEstado(EstadoEvento.valueOf(dto.getEstado()));
+        }
+        
         if (dto.getIdTipo() != 0) {
             evento.setTipo(tipoRepo.findById(dto.getIdTipo()).orElse(null));
         }

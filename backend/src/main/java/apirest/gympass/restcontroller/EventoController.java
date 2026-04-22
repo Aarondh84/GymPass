@@ -11,7 +11,7 @@ import apirest.gympass.service.EventoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/eventos") 
+@RequestMapping("/api/eventos") 
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class EventoController {
@@ -48,7 +48,7 @@ public class EventoController {
 
     // --- ADMINISTRACIÓN (ROLE_ADMON) 
 
-    @PostMapping("/alta") 
+    @PostMapping() 
     public ResponseEntity<EventoDTO> crear(@RequestBody EventoDTO eventoDto) {
         // Al crear, el servicio pondrá el estado ACTIVO por defecto 
         return new ResponseEntity<>(eventoService.save(eventoDto), HttpStatus.CREATED);
