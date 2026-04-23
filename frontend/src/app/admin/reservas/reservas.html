@@ -1,0 +1,59 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h4 class="fw-bold mb-4">Gestion de Reservas</h4>
+
+  @if (cargando) {
+    <div class="text-center py-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-danger" role="alert">
+      No se pudieron cargar las reservas. Comprueba tu conexion e intentalo de nuevo.
+      <button class="btn btn-outline-danger btn-sm ms-3" (click)="cargar()">Reintentar</button>
+    </div>
+  }
+
+  @if (!cargando && !error && reservas.length === 0) {
+    <div class="alert alert-info">No hay reservas registradas.</div>
+  }
+
+  @if (!cargando && !error && reservas.length > 0) {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Clase</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (reserva of reservas; track reserva.idReserva) {
+            <tr>
+              <td class="fw-semibold">{{ reserva.nombreEvento }}</td>
+              <td>{{ reserva.fechaInicio }}</td>
+              <td>{{ reserva.username }}</td>
+              <td>{{ reserva.precioVenta }} €</td>
+              <td>{{ reserva.cantidad }}</td>
+              <td>
+                <button class="btn btn-outline-danger btn-sm"
+                        (click)="cancelar(reserva.idReserva)"
+                        aria-label="Cancelar reserva">
+                  Cancelar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

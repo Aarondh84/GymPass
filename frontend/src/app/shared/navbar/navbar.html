@@ -8,13 +8,14 @@
   <div class="collapse navbar-collapse" id="navMenu">
 
     @if (isAdmin()) {
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a class="nav-link" routerLink="/admin/eventos">Clases</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/admin/usuarios">Usuarios</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/admin/tipos-evento">Tipos</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/admin/dashboard">Dashboard</a></li>
-      </ul>
-    }
+  <ul class="navbar-nav me-auto">
+    <li class="nav-item"><a class="nav-link" routerLink="/admin/eventos">Clases</a></li>
+    <li class="nav-item"><a class="nav-link" routerLink="/admin/reservas">Reservas</a></li>
+    <li class="nav-item"><a class="nav-link" routerLink="/admin/usuarios">Usuarios</a></li>
+    <li class="nav-item"><a class="nav-link" routerLink="/admin/tipos-evento">Tipos</a></li>
+    <li class="nav-item"><a class="nav-link" routerLink="/admin/dashboard">Dashboard</a></li>
+  </ul>
+}
 
     @if (isCliente()) {
       <ul class="navbar-nav me-auto">

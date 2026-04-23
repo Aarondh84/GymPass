@@ -23,7 +23,7 @@ public class ReservaServiceImpl implements ReservaService {
   @Override
   public List<ReservaDTO> findByUsername(String username) {
     return reservaRepository.findByUsuario_Username(username).stream()
-        .map(this::converToDto)
+        .map(this::convertToDto)
         .toList();
   }
 
@@ -54,7 +54,7 @@ public class ReservaServiceImpl implements ReservaService {
 
     Reserva reservaGuardada = reservaRepository.save(reserva);
 
-    return converToDto(reservaGuardada);
+    return convertToDto(reservaGuardada);
   }
 
   @Override
@@ -62,7 +62,7 @@ public class ReservaServiceImpl implements ReservaService {
     return reservaRepository.countByEvento_IdEvento(idEvento);
   }
 
-  private ReservaDTO converToDto(Reserva reserva) {
+  public ReservaDTO convertToDto(Reserva reserva) {
     return new ReservaDTO(
         reserva.getId(),
         reserva.getEvento().getIdEvento().longValue(),
@@ -73,5 +73,12 @@ public class ReservaServiceImpl implements ReservaService {
         reserva.getEvento().getNombre(),
         reserva.getEvento().getFechaInicio()
     );
+  }
+  @Override
+  @Transactional
+  public List<ReservaDTO> findAll() {
+      return reservaRepository.findAll().stream()
+              .map(this::convertToDto)
+              .toList();
   }
 }

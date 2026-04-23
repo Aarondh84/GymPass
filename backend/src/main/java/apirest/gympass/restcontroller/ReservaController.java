@@ -46,4 +46,11 @@ public class ReservaController {
         reservaService.cancelarReserva(id);
         return ResponseEntity.noContent().build();
     }
+    
+	 // GET /api/reservas — solo ROLE_ADMON
+	 // Devuelve todas las reservas para el panel de administracion
+	 @GetMapping
+	 public ResponseEntity<List<ReservaDTO>> getAll() {
+	     return ResponseEntity.ok(reservaService.findAll());
+	 }
 }

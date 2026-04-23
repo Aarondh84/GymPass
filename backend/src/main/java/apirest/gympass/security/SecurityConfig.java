@@ -51,6 +51,7 @@ public class SecurityConfig {
             		.requestMatchers(HttpMethod.GET, "/api/eventos/**").permitAll()
             		.requestMatchers(HttpMethod.GET, "/api/tipos/**").permitAll()
             		.requestMatchers(HttpMethod.GET, "/api/reservas/plazas/**").permitAll()
+            		.requestMatchers(HttpMethod.GET, "/api/reservas").hasAuthority("ROLE_ADMON")
             		.requestMatchers("/api/reservas/**").authenticated()
             		.requestMatchers("/api/usuarios/**").hasAuthority("ROLE_ADMON")
             		.requestMatchers(HttpMethod.POST, "/api/eventos/**").hasAuthority("ROLE_ADMON")

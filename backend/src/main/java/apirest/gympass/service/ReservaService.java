@@ -11,4 +11,5 @@ public interface ReservaService {
   void cancelarReserva(Long id);
   ReservaDTO crearReserva(ReservaDTO reservaDTO);
   long countReservasPorEvento(int idEvento);
+  List<ReservaDTO> findAll();
 }

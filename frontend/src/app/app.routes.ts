@@ -40,6 +40,7 @@ export const routes: Routes = [
     { path: 'eventos',      loadComponent: () => import('./admin/eventos/eventos').then(m => m.Eventos) },
     { path: 'usuarios',     loadComponent: () => import('./admin/usuarios/usuarios').then(m => m.Usuarios) },
     { path: 'tipos-evento', loadComponent: () => import('./admin/tipos-evento/tipos-evento').then(m => m.TiposEvento) },
+    { path: 'reservas',     loadComponent: () => import('./admin/reservas/reservas').then(m => m.Reservas) },
 ]},
 
   { path: '**', redirectTo: 'home' }
