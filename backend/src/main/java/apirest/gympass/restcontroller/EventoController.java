@@ -69,4 +69,9 @@ public class EventoController {
         eventoService.delete(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping
+    public ResponseEntity<List<EventoDTO>> getAll() {
+        return ResponseEntity.ok(eventoService.findAll());
+    }
 }

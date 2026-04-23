@@ -45,4 +45,8 @@ export class EventoService {
   eliminar(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  getAll() {
+  return this.http.get<Evento[]>(this.apiUrl);
+}
 }

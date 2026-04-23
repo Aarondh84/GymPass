@@ -11,6 +11,7 @@ public interface EventoService {
     List<EventoDTO> findByEstado(EstadoEvento estado); 
     List<EventoDTO> findByDestacado(String destacado);
     EventoDTO findById(int id);
+    List<EventoDTO> findAll();
     
     // --- MÉTODOS DE GESTIÓN ---
     // Recibe DTO para crear o editar 

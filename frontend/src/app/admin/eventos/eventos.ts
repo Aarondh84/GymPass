@@ -47,15 +47,15 @@ export class Eventos implements OnInit {
   ngOnInit() { this.cargar(); }
 
   cargar() {
-    this.cargando = true;
-    this.eventoService.getActivos().subscribe({
-      next: (data) => {
-        this.eventos  = data;
-        this.cargando = false;
-      },
-      error: () => this.cargando = false
-    });
-  }
+  this.cargando = true;
+  this.eventoService.getAll().subscribe({
+    next: (data) => {
+      this.eventos  = data;
+      this.cargando = false;
+    },
+    error: () => this.cargando = false
+  });
+}
 
   nuevo() {
     this.form.reset({

@@ -25,7 +25,8 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public List<EventoDTO> findByDestacado(String destacado) {
-        return eventoRepo.findByDestacado(destacado).stream()
+        // Solo mostramos destacados que esten ACTIVOS
+        return eventoRepo.findByDestacadoAndEstado(destacado, EstadoEvento.ACTIVO).stream()
                 .map(this::convertToDto)
                 .toList();
     }
@@ -119,5 +120,12 @@ public class EventoServiceImpl implements EventoService {
             evento.setTipo(tipoRepo.findById(dto.getIdTipo()).orElse(null));
         }
         return evento;
+    }
+    
+    @Override
+    public List<EventoDTO> findAll() {
+        return eventoRepo.findAll().stream()
+                .map(this::convertToDto)
+                .toList();
     }
 }
