@@ -48,23 +48,37 @@
         }
 
         @if (!mensajeOk) {
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="mb-1 text-muted small">Precio de la clase</p>
-              <p class="fw-bold fs-5 mb-0">{{ evento.precio }} €</p>
-            </div>
-            <button
-              class="btn btn-dark px-4"
-              (click)="reservar()"
-              [disabled]="reservando || plazasLibres === 0"
-              aria-label="Reservar plaza en esta clase">
-              @if (reservando) {
-                <span class="spinner-border spinner-border-sm me-2"></span>
-              }
-              {{ plazasLibres === 0 ? 'Sin plazas' : 'Reservar Plaza' }}
-            </button>
-          </div>
+  @if (evento.estado === 'ACTIVO') {
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <p class="mb-1 text-muted small">Precio de la clase</p>
+        <p class="fw-bold fs-5 mb-0">{{ evento.precio }} €</p>
+      </div>
+      <button
+        class="btn btn-dark px-4"
+        (click)="reservar()"
+        [disabled]="reservando || plazasLibres === 0"
+        aria-label="Reservar plaza en esta clase">
+        @if (reservando) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
         }
+        {{ plazasLibres === 0 ? 'Sin plazas' : 'Reservar Plaza' }}
+      </button>
+    </div>
+  }
+
+    @if (evento.estado === 'CANCELADO') {
+      <div class="alert alert-warning mb-0" role="alert">
+        Esta clase ha sido cancelada y no admite reservas.
+      </div>
+    }
+
+    @if (evento.estado === 'TERMINADO') {
+      <div class="alert alert-secondary mb-0" role="alert">
+        Esta clase ya ha finalizado.
+      </div>
+    }
+  }
 
       </div>
     </div>
