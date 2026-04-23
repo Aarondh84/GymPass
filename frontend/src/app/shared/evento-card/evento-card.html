@@ -17,12 +17,12 @@
       [class.bg-secondary]="evento.estado === 'TERMINADO'">
       {{ evento.estado }}
     </span>
-    @if (mostrarReserva) {
+    @if (mostrarReserva && evento.estado === 'ACTIVO') {
       <a [routerLink]="['/clientes/detalle', evento.idEvento]"
-         class="btn btn-dark btn-sm">Reservar</a>
+        class="btn btn-dark btn-sm">Reservar</a>
     } @else {
       <a [routerLink]="['/evento', evento.idEvento]"
-         class="btn btn-outline-dark btn-sm">Ver detalle</a>
+        class="btn btn-outline-dark btn-sm">Ver detalle</a>
     }
   </div>
 </div>
