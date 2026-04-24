@@ -1,8 +1,11 @@
 package apirest.gympass.restcontroller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import apirest.gympass.entityDto.ReservaDTO;
 import apirest.gympass.service.ReservaService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +38,7 @@ public class ReservaController {
         try {
             return ResponseEntity.ok(reservaService.crearReserva(reservaDTO));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(400).body(Map.of("mensaje", e.getMessage()));
         }
     }
 

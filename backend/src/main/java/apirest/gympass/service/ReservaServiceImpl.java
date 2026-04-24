@@ -35,13 +35,23 @@ public class ReservaServiceImpl implements ReservaService {
   @Override
   @Transactional
   public ReservaDTO crearReserva(ReservaDTO reservaDTO) {
+    int totalReservas = reservaRepository.countByUsuario_Username(reservaDTO.getUsername());
+
+    if (totalReservas >= 10) {
+      throw new RuntimeException("Has alcanzado el limite máximo de 10 reservas");
+    }
+
+    if (reservaRepository.existsByEvento_IdEventoAndUsuario_Username(reservaDTO.getIdEvento().intValue(), reservaDTO.getUsername())) {
+      throw new RuntimeException("Ya tienes una reserva para este evento");
+    }
     Evento evento = eventoRepository.findById(reservaDTO.getIdEvento().intValue())
         .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
 
     Usuario usuario = usuarioRepository.findById(reservaDTO.getUsername())
         .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
       
-    if (evento.getAforoMaximo() <= 0) {
+    long ocupadas = reservaRepository.countByEvento_IdEvento(evento.getIdEvento());
+    if (ocupadas >= evento.getAforoMaximo()) {
       throw new RuntimeException("No hay plazas disponibles");
     }
 

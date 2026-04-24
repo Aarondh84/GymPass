@@ -16,4 +16,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
     // Comprueba si un usuario ya tiene reserva en un evento concreto
     boolean existsByEvento_IdEventoAndUsuario_Username(int idEvento, String username);
+
+    int countByUsuario_Username(String username);
 }
