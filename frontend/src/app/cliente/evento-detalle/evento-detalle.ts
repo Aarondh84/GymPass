@@ -57,7 +57,7 @@ export class EventoDetalle implements OnInit {
   reservar() {
     this.reservando   = true;
     this.mensajeError = '';
-
+    this.mensajeOk    = '';
     const reserva = {
       idEvento:    this.evento!.idEvento,
       username:    this.auth.currentUser()!.username,
@@ -69,16 +69,20 @@ export class EventoDetalle implements OnInit {
       next: () => {
         this.mensajeOk  = 'Reserva confirmada. Nos vemos en clase.';
         this.reservando = false;
+        this.calcularPlazas();
       },
       error: (err) => {
-        if (err.status === 409) {
+        this.reservando = false;
+        if (err.error && err.error.mensaje) {
+          this.mensajeError = err.error.mensaje;
+        } else if (err.status === 409) {
           this.mensajeError = 'Ya tienes 2 reservas para este día. No puedes reservar más clases.';
         } else if (err.status === 400) {
           this.mensajeError = 'No hay plazas disponibles para esta clase.';
         } else {
-          this.mensajeError = err.error?.mensaje ?? 'Error al realizar la reserva.';
+          this.mensajeError = 'Error al realizar la reserva.';
         }
-        this.reservando = false;
+
       }
     });
   }
