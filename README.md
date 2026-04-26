@@ -124,15 +124,6 @@ GymPass/
 
 ---
 
-## Usuarios de prueba
-
-| Usuario | Contraseña | Rol |
-|---|---|---|
-| admin | admin123 | Administrador |
-| cliente1 | cliente123 | Cliente |
-
----
-
 ## Características principales
 
 - Autenticación con JWT y redirección automática por rol
