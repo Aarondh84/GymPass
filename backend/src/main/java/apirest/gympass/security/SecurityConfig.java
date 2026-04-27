@@ -46,23 +46,36 @@ public class SecurityConfig {
             )
 
             .authorizeHttpRequests(auth -> auth
-            		.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            		.requestMatchers("/api/auth/**").permitAll()
-            		.requestMatchers(HttpMethod.GET, "/api/eventos/**").permitAll()
-            		.requestMatchers(HttpMethod.GET, "/api/tipos/**").permitAll()
-            		.requestMatchers(HttpMethod.GET, "/api/reservas/plazas/**").permitAll()
-            		.requestMatchers(HttpMethod.GET, "/api/reservas").hasAuthority("ROLE_ADMON")
-            		.requestMatchers("/api/reservas/**").authenticated()
-            		.requestMatchers("/api/usuarios/**").hasAuthority("ROLE_ADMON")
-            		.requestMatchers(HttpMethod.POST, "/api/eventos/**").hasAuthority("ROLE_ADMON")
-            		.requestMatchers(HttpMethod.PUT, "/api/eventos/**").hasAuthority("ROLE_ADMON")
-            		.requestMatchers(HttpMethod.PATCH, "/api/eventos/**").hasAuthority("ROLE_ADMON")
-            		.requestMatchers(HttpMethod.DELETE, "/api/eventos/**").hasAuthority("ROLE_ADMON")
-            		.requestMatchers(HttpMethod.POST, "/api/tipos/**").hasAuthority("ROLE_ADMON")
-            		.requestMatchers(HttpMethod.PUT, "/api/tipos/**").hasAuthority("ROLE_ADMON")
-            		.requestMatchers(HttpMethod.DELETE, "/api/tipos/**").hasAuthority("ROLE_ADMON")
-            		.requestMatchers(HttpMethod.GET, "/api/admin/stats").hasAuthority("ROLE_ADMON")
-            		.anyRequest().authenticated()
+            	    // 1. Pre-vuelo (CORS) y Auth siempre permitidos
+            	    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            	    .requestMatchers("/api/auth/**").permitAll()
+
+            	    // 2. RUTAS PÚBLICAS ESPECÍFICAS (Importante: poner antes que las de ADMON)
+            	    // Usamos GET explícito para las rutas de consulta
+            	    .requestMatchers(HttpMethod.GET, "/api/eventos/activos").permitAll()
+            	    .requestMatchers(HttpMethod.GET, "/api/eventos/destacados").permitAll()
+            	    .requestMatchers(HttpMethod.GET, "/api/eventos/cancelados").permitAll()
+            	    .requestMatchers(HttpMethod.GET, "/api/eventos/terminados").permitAll()
+            	    .requestMatchers(HttpMethod.GET, "/api/eventos/{id}").permitAll()
+            	    .requestMatchers(HttpMethod.GET, "/api/tipos/**").permitAll()
+            	    .requestMatchers(HttpMethod.GET, "/api/reservas/plazas/**").permitAll()
+
+            	    // 3. RUTAS DE ADMINISTRADOR (ADMON)
+            	    // Bloqueamos cualquier método que no sea GET en eventos para el resto
+            	    .requestMatchers("/api/usuarios/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers("/api/admin/stats").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.POST, "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.PUT, "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.PATCH, "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers(HttpMethod.DELETE, "/api/eventos/**").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers("/api/tipos/**").hasAuthority("ROLE_ADMON")
+            	    
+            	    // 4. RESERVAS (Requiere estar logueado, sea cliente o admin)
+            	    .requestMatchers(HttpMethod.GET, "/api/reservas").hasAuthority("ROLE_ADMON")
+            	    .requestMatchers("/api/reservas/**").authenticated()
+
+            	    // 5. CUALQUIER OTRA COSA
+            	    .anyRequest().authenticated()
             	)
 
             // Añadimos nuestro filtro JWT antes del filtro de Spring Security
